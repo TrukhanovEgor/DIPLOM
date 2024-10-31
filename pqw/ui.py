@@ -59,7 +59,7 @@ def show_page(selected_index, content_area):
                                 icon_color="DEEP_ORANGE_300",
                                 icon_size=40,
                                 tooltip="Добавить",
-                                on_click=lambda e: create_new_training(content_area),  # Переход на новую страницу
+                                on_click=lambda e: create_new_training(content_area),# Переход на новую страницу
                             ),
                         ],
                         alignment=ft.MainAxisAlignment.END,
@@ -74,9 +74,10 @@ def show_page(selected_index, content_area):
     content_area.update()  # Обновляем content_area
 
 def create_new_training(content_area):
-    content_area.controls.clear()  # Очищаем предыдущий контент
+    content_area.controls.clear()# Очищаем предыдущий контент
     
     content_area.controls.append(
+    
         ft.Column(
             [
                 ft.Container(
@@ -89,7 +90,7 @@ def create_new_training(content_area):
                     content=ft.Text("Количество дней:", size=14, weight=ft.FontWeight.BOLD,
                                     color=ft.colors.WHITE, style="font-family: 'Arial';"),
                 ),
-                
+                ft.Container(expand=True,bgcolor=ft.colors.DEEP_ORANGE_300),  # Заполнитель, чтобы отодвинуть кнопки вниз
                 # Добавление двух овальных кнопок
                 ft.Row(
                     [
@@ -107,7 +108,7 @@ def create_new_training(content_area):
                             on_click=lambda e: cancel_training(content_area),
                             style=ft.ButtonStyle(
                                 shape=ft.RoundedRectangleBorder(radius=30),  # Овальная форма
-                                bgcolor=ft.colors.RED_300,
+                                bgcolor=ft.colors.DEEP_ORANGE_300,
                                 color=ft.colors.WHITE,
                             ),
                         ),
@@ -115,11 +116,19 @@ def create_new_training(content_area):
                     alignment=ft.MainAxisAlignment.CENTER,
                     spacing=20,
                 ),
-            ]
+            ],
+            alignment=ft.MainAxisAlignment.START,  # Выравнивание элементов в начале колонки
+            expand=True,  # Позволяет колонне занимать всё доступное пространство
         )
     )
     
     content_area.update()  # Обновляем content_area
+
+
+
+    content_area.controls.clear()  # Очищаем предыдущий контент
+    
+   
 
 def save_training(content_area):
     # Логика сохранения тренировки
@@ -129,5 +138,6 @@ def save_training(content_area):
 def cancel_training(content_area):
     # Логика отмены создания тренировки
     print("Создание тренировки отменено.")
+    show_page(1, content_area)
     # Здесь можно добавить дополнительную логику для возврата к предыдущему экрану
 
