@@ -1,4 +1,3 @@
-# main.py
 import flet as ft
 from ui import create_app_bar, create_panel_exemples, create_panel_plans, show_page
 
@@ -37,7 +36,7 @@ def main(page: ft.Page):
         elif index == 1:
             app_bar.title = ft.Text("Планы", size=20)
             page.add(panel_plans)
-            show_page(0, content_area)  # Показать первую страницу по умолчанию
+            show_page(0, content_area)     # Показать первую страницу по умолчанию
         elif index == 2:
             app_bar.title = ft.Text("Журнал", size=20)
             page.add(panel_journal)
