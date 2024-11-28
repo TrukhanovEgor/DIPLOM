@@ -74,67 +74,84 @@ def show_page(selected_index, content_area):
     content_area.update()  # Обновляем content_area
 
 def create_new_training(content_area):
-    content_area.controls.clear()# Очищаем предыдущий контент
+    content_area.controls.clear()  # Очищаем предыдущий контент
     
+    # Создаем текстовые поля
+    name_training = ft.TextField(
+        label="Название тренировки",
+        width=200,
+        height=40,
+        text_size=20,
+        autofocus=True
+    )
+    
+    days_count = ft.TextField(
+        label="Количество дней",
+        width=200,
+        height=40,
+        text_size=20,
+        autofocus=True
+    )
+    
+    # Добавляем текстовые поля и кнопки в content_area
     content_area.controls.append(
-    
         ft.Column(
             [
+                ft.Container(height=30),
+                name_training,
+                ft.Container(height=30),
+                days_count,
+                ft.Container(height=50),  # Отступ между полями и кнопками
+                
                 ft.Container(
-                    padding=ft.padding.symmetric(10, 10),
-                    content=ft.Text("Название тренировки:", size=14, weight=ft.FontWeight.BOLD,
-                                    color=ft.colors.WHITE, style="font-family: 'Arial';"),
-                ),
-                ft.Container(
-                    padding=ft.padding.symmetric(10, 10),
-                    content=ft.Text("Количество дней:", size=14, weight=ft.FontWeight.BOLD,
-                                    color=ft.colors.WHITE, style="font-family: 'Arial';"),
-                ),
-                ft.Container(expand=True,bgcolor=ft.colors.DEEP_ORANGE_300),  # Заполнитель, чтобы отодвинуть кнопки вниз
-                # Добавление двух овальных кнопок
-                ft.Row(
-                    [
-                        ft.ElevatedButton(
-                            text="Сохранить",
-                            on_click=lambda e: save_training(content_area),
-                            style=ft.ButtonStyle(
-                                shape=ft.RoundedRectangleBorder(radius=30),  # Овальная форма
-                                bgcolor=ft.colors.DEEP_ORANGE_300,
-                                color=ft.colors.WHITE,
+                    alignment=ft.Alignment(0, 1),  # Центрирование по горизонтали
+                    content=ft.Column(
+                        [
+                            ft.ElevatedButton(
+                                text="Сохранить",
+                                on_click=lambda e: save_training(content_area, name_training, days_count),
+                                style=ft.ButtonStyle(
+                                    shape=ft.RoundedRectangleBorder(radius=30),  # Овальная форма
+                                    bgcolor=ft.colors.DEEP_ORANGE_300,
+                                    color=ft.colors.WHITE,
+                                ),
+                                width=200,  # Ширина кнопки                           
                             ),
-                        ),
-                        ft.ElevatedButton(
-                            text="Отменить",
-                            on_click=lambda e: cancel_training(content_area),
-                            style=ft.ButtonStyle(
-                                shape=ft.RoundedRectangleBorder(radius=30),  # Овальная форма
-                                bgcolor=ft.colors.DEEP_ORANGE_300,
-                                color=ft.colors.WHITE,
+                            ft.ElevatedButton(
+                                text="Отменить",
+                                on_click=lambda e: cancel_training(content_area),
+                                style=ft.ButtonStyle(
+                                    shape=ft.RoundedRectangleBorder(radius=30),  # Овальная форма
+                                    bgcolor=ft.colors.DEEP_ORANGE_300,
+                                    color=ft.colors.WHITE,
+                                ),
+                                width=200,  # Ширина кнопки   
                             ),
-                        ),
-                    ],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                    spacing=20,
+                        ],
+                        alignment=ft.MainAxisAlignment.CENTER,
+                        spacing=20,
+                    ),
                 ),
             ],
             alignment=ft.MainAxisAlignment.START,  # Выравнивание элементов в начале колонки
             expand=True,  # Позволяет колонне занимать всё доступное пространство
         )
     )
-    
+
     content_area.update()  # Обновляем content_area
 
-
-
-    content_area.controls.clear()  # Очищаем предыдущий контент
+def save_training(content_area, name_training, days_count):
+    # Получаем значения из текстовых полей
+    training_name = name_training.value
+    days = days_count.value
     
-   
-
-def save_training(content_area):
     # Логика сохранения тренировки
-    print("Тренировка сохранена!")
-    # Здесь можно добавить дополнительную логику после сохранения
+    print(f"Тренировка сохранена! Название: {training_name}, Количество дней: {days}")
+    
+    # Здесь можно добавить дополнительную логику для сохранения данных в базу данных или файл
 
+    # Возвращаемся на предыдущую страницу или показываем сообщение об успешном сохранении
+    show_page(1, content_area)
 def cancel_training(content_area):
     # Логика отмены создания тренировки
     print("Создание тренировки отменено.")
