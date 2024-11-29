@@ -31,8 +31,9 @@ def create_panel_plans(content_area, selected_plan):
         ]
     )
 
-def show_page(selected_index, content_area):
+def show_page(selected_index, content_area, training_name=None):
     content_area.controls.clear()  # Очищаем предыдущий контент
+    
     if selected_index == 0:
         content_area.controls.append(
             ft.Column(
@@ -43,34 +44,51 @@ def show_page(selected_index, content_area):
             )
         )
     elif selected_index == 1:
-        content_area.controls.append(
-            ft.Column(
-                [
-                    ft.Row(
-                        [
-                            ft.IconButton(
-                                icon=ft.icons.EDIT,
-                                icon_color="DEEP_ORANGE_300",
-                                icon_size=20,
-                                tooltip="Редактировать",
-                            ),
-                            ft.IconButton(
-                                icon=ft.icons.ADD_CIRCLE,
-                                icon_color="DEEP_ORANGE_300",
-                                icon_size=40,
-                                tooltip="Добавить",
-                                on_click=lambda e: create_new_training(content_area),# Переход на новую страницу
-                            ),
-                        ],
-                        alignment=ft.MainAxisAlignment.END,
-                        spacing=10,
-                    ),
-                    ft.Text("Содержимое страницы Личные", size=20),
-                    ft.Text("Здесь можно добавить больше информации о личных планах.", size=16),
-                ]
-            )
+        personal_content = ft.Column(
+            [
+                ft.Row(
+                    [
+                        ft.IconButton(
+                            icon=ft.icons.EDIT,
+                            icon_color="DEEP_ORANGE_300",
+                            icon_size=20,
+                            tooltip="Редактировать",
+                        ),
+                        ft.IconButton(
+                            icon=ft.icons.ADD_CIRCLE,
+                            icon_color="DEEP_ORANGE_300",
+                            icon_size=40,
+                            tooltip="Добавить",
+                            on_click=lambda e: create_new_training(content_area),  # Переход на новую страницу
+                        ),
+                    ],
+                    alignment=ft.MainAxisAlignment.END,
+                    spacing=10,
+                ),
+                #ft.Text("Содержимое страницы Личные", size=20),
+                #ft.Text("Здесь можно добавить больше информации о личных планах.", size=16),
+            ]
         )
-    
+
+        # Проверяем, есть ли название тренировки, чтобы отобразить кнопку
+        if training_name:
+            personal_content.controls.append(
+                ft.TextButton(
+                    text=training_name,
+                    on_click=lambda e: show_page(0, content_area),
+                    style=ft.ButtonStyle(
+                        color=ft.colors.DEEP_ORANGE_300,
+                        shape=ft.RoundedRectangleBorder(radius=10),
+                    ),
+                )
+            )
+        else:
+            personal_content.controls.append(
+                ft.Text("Создайте тренировку", size=16, color=ft.colors.GREY)
+            )
+
+        content_area.controls.append(personal_content)
+
     content_area.update()  # Обновляем content_area
 
 def create_new_training(content_area):
@@ -148,10 +166,8 @@ def save_training(content_area, name_training, days_count):
     # Логика сохранения тренировки
     print(f"Тренировка сохранена! Название: {training_name}, Количество дней: {days}")
     
-    # Здесь можно добавить дополнительную логику для сохранения данных в базу данных или файл
-
-    # Возвращаемся на предыдущую страницу или показываем сообщение об успешном сохранении
-    show_page(1, content_area)
+    # Возвращаемся на страницу "Личные" с переданным названием тренировки
+    show_page(1, content_area, training_name)  # Передаем название тренировки
 def cancel_training(content_area):
     # Логика отмены создания тренировки
     print("Создание тренировки отменено.")
