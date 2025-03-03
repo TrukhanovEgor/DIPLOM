@@ -1,6 +1,9 @@
 import flet as ft
 from exemples_pres.exempless_pres import exempless_pres
 from exemples_pres.exemples_back import exemples_back
+from exemples_pres.exemples_biceps import exemples_biceps
+from exemples_pres.exemplts_triceps import exemples_triceps
+from exemples_pres.exemples_breast import exemples_breast
 
 def create_panel_exempless(page):
     # Контейнер Пресс
@@ -54,7 +57,7 @@ def create_panel_exempless(page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exemples_back(e, page,)  # Прозрачный фон
+        on_click=lambda e: exemples_back (e, page,)  # Прозрачный фон
     )   
 
     #контейнер Бицепс
@@ -80,7 +83,8 @@ def create_panel_exempless(page):
             padding=ft.padding.all(10),
             border_radius=10
         ),
-        bgcolor=ft.colors.TRANSPARENT  # Прозрачный фон
+        bgcolor=ft.colors.TRANSPARENT,  # Прозрачный фон
+        on_click=lambda e: exemples_biceps (e, page,)
     )
 
     #контейнер Трицепс
@@ -106,7 +110,8 @@ def create_panel_exempless(page):
             padding=ft.padding.all(10),
             border_radius=10
         ),
-        bgcolor=ft.colors.TRANSPARENT  # Прозрачный фон
+        bgcolor=ft.colors.TRANSPARENT,  # Прозрачный фон
+        on_click=lambda e: exemples_triceps (e, page,)
     )
 
     #контейнер Грудные
@@ -132,7 +137,8 @@ def create_panel_exempless(page):
             padding=ft.padding.all(10),
             border_radius=10
         ),
-        bgcolor=ft.colors.TRANSPARENT  # Прозрачный фон
+        bgcolor=ft.colors.TRANSPARENT,
+        on_click=lambda e: exemples_breast (e, page,)
     )
 
      #контейнер предплечья

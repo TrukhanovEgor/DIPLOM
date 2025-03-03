@@ -7,9 +7,9 @@ def main(page: ft.Page):
     page.theme_mode = ft.ThemeMode.DARK
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.bgcolor = ft.colors.BLACK
-    page.window.width = 350  # Используйте новое свойство window.width
-    page.window.height = 600  # Используйте новое свойство window.height
-    page.window.resizable = False  # Используйте новое свойство window.resizable
+    page.window.width = 350  
+    page.window.height = 600 
+    page.window.resizable = False 
     
     app_bar = create_app_bar()
     page.add(app_bar)
@@ -19,7 +19,7 @@ def main(page: ft.Page):
     selected_plan = ft.Text(size=24, weight=ft.FontWeight.BOLD)
     content_area = ft.Column()
 
-    # Инициализация panel_plans перед добавлением в страницу
+    
     panel_plans = create_panel_plans(content_area, selected_plan)
 
     # Журнал
@@ -30,15 +30,15 @@ def main(page: ft.Page):
 
     def navigate(e):
         index = e.control.selected_index
-        page.clean()  # Очистить страницу перед изменением контента
+        page.clean() 
 
-        # Проверяем, какой пункт меню выбран, и обновляем контент
+      
         if index == 0:
             app_bar.title = ft.Text("Упражнения", size=20)
             page.add(panel_exemples)
         elif index == 1:
             app_bar.title = ft.Text("Планы", size=20)
-            page.add(panel_plans)  # Теперь panel_plans корректно добавляется
+            page.add(panel_plans) 
             show_page(0, content_area, e, page)  # Показать первую страницу по умолчанию
         elif index == 2:
             app_bar.title = ft.Text("Журнал", size=20)
@@ -47,8 +47,8 @@ def main(page: ft.Page):
             app_bar.title = ft.Text("Профиль", size=20)
             page.add(panel_profile)
 
-        page.add(app_bar)  # Добавляем app_bar внизу после добавления панелей
-        page.update()  # Обновляем страницу
+        page.add(app_bar)  
+        page.update() 
 
     page.navigation_bar = ft.NavigationBar(
         destinations=[
