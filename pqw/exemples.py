@@ -4,6 +4,9 @@ from exemples_pres.exemples_back import exemples_back
 from exemples_pres.exemples_biceps import exemples_biceps
 from exemples_pres.exemplts_triceps import exemples_triceps
 from exemples_pres.exemples_breast import exemples_breast
+from exemples_pres.exemples_Forearms import exemples_Forearms
+from exemples_pres.exmples_Legs import exemples_Legs
+from exemples_pres.exemples_Shoulders import exemples_Shoulders
 
 def create_panel_exempless(page):
     # Контейнер Пресс
@@ -164,7 +167,8 @@ def create_panel_exempless(page):
             padding=ft.padding.all(10),
             border_radius=10
         ),
-        bgcolor=ft.colors.TRANSPARENT  # Прозрачный фон
+        bgcolor=ft.colors.TRANSPARENT,
+          on_click=lambda e: exemples_Forearms (e, page,)  # Прозрачный фон
     )
 
      #контейнер ноги
@@ -190,7 +194,8 @@ def create_panel_exempless(page):
             padding=ft.padding.all(10),
             border_radius=10
         ),
-        bgcolor=ft.colors.TRANSPARENT  # Прозрачный фон
+        bgcolor=ft.colors.TRANSPARENT,
+          on_click=lambda e: exemples_Legs (e, page,)  # Прозрачный фон
     )
 
          #контейнер плечи
@@ -216,7 +221,8 @@ def create_panel_exempless(page):
             padding=ft.padding.all(10),
             border_radius=10
         ),
-        bgcolor=ft.colors.TRANSPARENT  # Прозрачный фон
+        bgcolor=ft.colors.TRANSPARENT,
+          on_click=lambda e: exemples_Shoulders (e, page,)  # Прозрачный фон
     )
 
     return ft.ListView(
