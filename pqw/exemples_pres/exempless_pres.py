@@ -1,4 +1,5 @@
 import flet as ft
+from exemples_pres.Pres.Exe_Pres import *
 
 def exempless_pres(e, page):
     page.clean()
@@ -31,7 +32,7 @@ def exempless_pres(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exempless_pres(e, page),
+        on_click=lambda e: Pres1 (e, page),
     )
 
     button2 = ft.ElevatedButton(

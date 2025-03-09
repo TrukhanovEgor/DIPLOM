@@ -3,6 +3,8 @@ import flet as ft
 def exemples_biceps(e, page):
     page.clean()
 
+    
+
     app_bar = ft.AppBar(
         title=ft.Text("бицепс", size=20, color=ft.colors.WHITE),
         bgcolor=ft.colors.DEEP_ORANGE_300,
