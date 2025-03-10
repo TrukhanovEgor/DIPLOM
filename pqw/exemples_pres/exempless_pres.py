@@ -1,5 +1,8 @@
 import flet as ft
 from exemples_pres.Pres.Exe_Pres import *
+from exemples_pres.Pres.Exe_Pres1 import *
+from exemples_pres.Pres.Exe_Pres3 import *
+
 
 def exempless_pres(e, page):
     page.clean()
@@ -46,7 +49,7 @@ def exempless_pres(e, page):
                         border_radius=50,
                     ),
                     ft.Text(
-                        "Подъем ног из \n положения лежа",
+                        "Подъем ног в висе ",
                         size=20,
                         weight=ft.FontWeight.BOLD,
                         color=ft.colors.WHITE,
@@ -58,7 +61,7 @@ def exempless_pres(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exempless_pres(e, page),
+        on_click=lambda e: Pres2 (e, page),
     )
 
      # Кнопка 3
@@ -67,7 +70,7 @@ def exempless_pres(e, page):
             content=ft.Row(
                 [
                     ft.Image(
-                        src="https://example.com/image3.jpg",  # Замените на нужный URL
+                        src="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F04071101-Dumbbell-Side-Bend_Waist_small.png&w=640&q=100",  # Замените на нужный URL
                         width=50,
                         height=50,
                         border_radius=50,
@@ -85,7 +88,7 @@ def exempless_pres(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exempless_pres(e, page),
+        on_click=lambda e: Pres3 (e, page),
     )
 
      # Кнопка 4

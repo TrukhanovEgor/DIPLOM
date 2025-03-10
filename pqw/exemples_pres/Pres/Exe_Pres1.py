@@ -1,7 +1,7 @@
 import flet as ft
 from datetime import datetime
 
-def Pres1(e, page):
+def Pres2(e, page):
     from exemples_pres.exempless_pres import exempless_pres  # Импортируем здесь
     page.clean()
 
@@ -20,7 +20,7 @@ def Pres1(e, page):
         center_title=True,
     )
 
-    video_path = ft.VideoMedia("video//02771201.mp4")
+    video_path = ft.VideoMedia("video//1764002.mp4")
 
     my_video = ft.Container(
         content=ft.Video(
@@ -39,7 +39,7 @@ def Pres1(e, page):
     )
 
     muscles = ft.Container(
-        content=ft.Text("Мышцы : Прямые мышцы живота", size=17, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
+        content=ft.Text("Мышцы : Прямые и косые , мышцы живота", size=17, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
         padding=ft.padding.all(10),
         border_radius=15,
     )
