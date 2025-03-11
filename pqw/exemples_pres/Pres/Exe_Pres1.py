@@ -20,7 +20,7 @@ def Pres2(e, page):
         center_title=True,
     )
 
-    video_path = ft.VideoMedia("video//1764002.mp4")
+    video_path = ft.VideoMedia("video/video_Pres//1764002.mp4")
 
     my_video = ft.Container(
         content=ft.Video(

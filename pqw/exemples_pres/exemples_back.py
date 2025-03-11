@@ -1,4 +1,13 @@
 import flet as ft
+from exemples_pres.Back.Exe_Back1 import *
+from exemples_pres.Back.Exe_Back2 import *
+from exemples_pres.Back.Exe_Back3 import *
+from exemples_pres.Back.Exe_Back4 import *
+from exemples_pres.Back.Exe_Back5 import *
+from exemples_pres.Back.Exe_Back6 import *
+from exemples_pres.Back.Exe_Back7 import *
+#from exemples_pres.Back.Exe_Back8 import *
+#from exemples_pres.Back.Exe_Back9 import *
 
 def exemples_back(e, page):
     page.clean()
@@ -32,7 +41,7 @@ def exemples_back(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exemples_back(e, page),
+        on_click=lambda e: Back1 (e, page),
     )
 
     #2 
@@ -59,7 +68,7 @@ def exemples_back(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exemples_back(e, page),
+        on_click=lambda e: Back2 (e, page),
     )
 
     #3
@@ -86,7 +95,7 @@ def exemples_back(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exemples_back(e, page),
+        on_click=lambda e: Back3 (e, page),
     )
 
     #4
@@ -113,7 +122,7 @@ def exemples_back(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exemples_back(e, page),
+        on_click=lambda e: Back4 (e, page),
     )
 
     #5
@@ -140,7 +149,7 @@ def exemples_back(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exemples_back(e, page),
+        on_click=lambda e: Back5 (e, page),
     )
 
     #6
@@ -167,7 +176,7 @@ def exemples_back(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exemples_back(e, page),
+        on_click=lambda e: Back6 (e, page),
     )
     
     #7
@@ -194,7 +203,7 @@ def exemples_back(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exemples_back(e, page),
+        on_click=lambda e: Back7 (e, page),
     )
 
     #8

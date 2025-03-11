@@ -2,8 +2,13 @@ import flet as ft
 from exemples_pres.Pres.Exe_Pres import *
 from exemples_pres.Pres.Exe_Pres1 import *
 from exemples_pres.Pres.Exe_Pres3 import *
-
-
+from exemples_pres.Pres.Exe_Pres4 import *
+from exemples_pres.Pres.Exe_Pres5 import *
+from exemples_pres.Pres.Exe_Pres6 import *
+from exemples_pres.Pres.Exe_Pres7 import *
+from exemples_pres.Pres.Exe_Pres8 import *
+from exemples_pres.Pres.Exe_Pres9 import *
+from exemples_pres.Pres.Exe_Pres10 import *
 def exempless_pres(e, page):
     page.clean()
 
@@ -115,7 +120,7 @@ def exempless_pres(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exempless_pres(e, page),
+        on_click=lambda e: Pres4 (e, page),
     )
 
          # Кнопка 5
@@ -142,7 +147,7 @@ def exempless_pres(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exempless_pres(e, page),
+        on_click=lambda e: Pres5(e, page),
     )
 
     # Кнопка 6
@@ -169,7 +174,7 @@ def exempless_pres(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exempless_pres(e, page),
+        on_click=lambda e: Pres6(e, page),
     )
 
     # Кнопка 7
@@ -184,7 +189,7 @@ def exempless_pres(e, page):
                         border_radius=50,
                     ),
                     ft.Text(
-                        "Подъемы ног\n из положения лежа \n на \n горизонтальной скамье",
+                        "Подъемы ног",
                         size=20,
                         weight=ft.FontWeight.BOLD,
                         color=ft.colors.WHITE,
@@ -196,7 +201,7 @@ def exempless_pres(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exempless_pres(e, page),
+        on_click=lambda e: Pres7(e, page),
     )
 
     # Кнопка 8
@@ -223,7 +228,7 @@ def exempless_pres(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exempless_pres(e, page),
+        on_click=lambda e: Pres8(e, page),
     )
 
         # Кнопка 9
@@ -250,7 +255,7 @@ def exempless_pres(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exempless_pres(e, page),
+        on_click=lambda e: Pres9(e, page),
     )
 
             # Кнопка 10
@@ -277,7 +282,7 @@ def exempless_pres(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exempless_pres(e, page),
+        on_click=lambda e: Pres10 (e, page),
     )
 
     # Создаем контент для страницы
