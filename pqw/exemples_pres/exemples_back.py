@@ -6,8 +6,9 @@ from exemples_pres.Back.Exe_Back4 import *
 from exemples_pres.Back.Exe_Back5 import *
 from exemples_pres.Back.Exe_Back6 import *
 from exemples_pres.Back.Exe_Back7 import *
-#from exemples_pres.Back.Exe_Back8 import *
-#from exemples_pres.Back.Exe_Back9 import *
+from exemples_pres.Back.Exe_Back8 import *
+from exemples_pres.Back.Exe_Back9 import *
+from exemples_pres.Back.Exe_Back10 import *
 
 def exemples_back(e, page):
     page.clean()
@@ -185,7 +186,7 @@ def exemples_back(e, page):
             content=ft.Row(
                 [
                     ft.Image(
-                        src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh6JcMZQOk2AwBGKq0kM4qH67gUPC4V7F4gforXYy6z8aa5a9nWuV85DAFpYNiDpDkOrskq31r4ahUZCAKbZsiqXair5W1KeQEtnUfo11OS5ojY1lKkAkxUXzSQviJbfhDqbk8RsTTzZgDb/s320-rw/dumbellshrugs1.pngom/prod.skimble/assets/1419622/image_iphone.jpg",
+                        src="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F04061101-Dumbbell-Shrug_Back-FIX_small.png&w=640&q=100",
                         width=50,
                         height=50,
                         border_radius=50,
@@ -230,7 +231,7 @@ def exemples_back(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exemples_back(e, page),
+        on_click=lambda e: Back8 (e, page),
     )
 
     #9
@@ -257,7 +258,7 @@ def exemples_back(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exemples_back(e, page),
+        on_click=lambda e: Back9 (e, page),
     )
 
     #10
@@ -284,7 +285,7 @@ def exemples_back(e, page):
             border_radius=10
         ),
         bgcolor=ft.colors.TRANSPARENT,
-        on_click=lambda e: exemples_back(e, page),
+        on_click=lambda e: Back10 (e, page),
     )
 
 

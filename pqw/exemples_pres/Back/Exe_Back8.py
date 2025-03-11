@@ -1,7 +1,7 @@
 import flet as ft
 from datetime import datetime
 
-def Back7(e, page):
+def Back8(e, page):
     from exemples_pres.exemples_back import exemples_back # Импортируем здесь
     page.clean()
 
@@ -15,12 +15,12 @@ def Back7(e, page):
     # Создаем AppBar
     app_bar = ft.AppBar(
         leading=back_button,
-        title=ft.Text("Шраги с гантелями", size=17, color=ft.colors.WHITE),
+        title=ft.Text("Гиперэкстензия", size=17, color=ft.colors.WHITE),
         bgcolor=ft.colors.DEEP_ORANGE_300,
         center_title=True,
     )
 
-    video_path = ft.VideoMedia("video/video_Back//04061007.mp4")
+    video_path = ft.VideoMedia("video/video_Back//08771008.mp4")
 
     my_video = ft.Container(
         content=ft.Video(
@@ -39,14 +39,14 @@ def Back7(e, page):
     )
 
     muscles = ft.Container(
-        content=ft.Text("Мышцы : трапециевидные мышцы спины", size=17, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
+        content=ft.Text("Мышцы : Большая ягодичная мышца, \n Четырёхглавая мышца бедра ", size=17, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
         padding=ft.padding.all(10),
         border_radius=15,
-    )
+    ) 
 
     img1 = ft.Container(
         content=ft.Image(
-            src="https://sun9-18.userapi.com/impg/vkNZnq8QukM70Y7PgN_VkA9kw78wxvkIkYHnAQ/Cc3UUAg9NBQ.jpg?size=560x420&quality=96&sign=3e375962107617fc433cb0291709137e&c_uniq_tag=jBq476pNGl6kuze8hbyFl1QPGhXsWsxeWYiMqNOTTAI&type=album",
+            src="https://s3assets.skimble.com/assets/1419486/image_iphone.jpg",
             width=300,
             height=300,
             fit=ft.ImageFit.CONTAIN,
