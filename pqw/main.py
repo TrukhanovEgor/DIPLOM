@@ -1,15 +1,16 @@
 import flet as ft
 from exemples import create_panel_exempless
 from ui import create_app_bar, create_panel_plans, show_page
+from journal.journal import journal_page
 
 def main(page: ft.Page):
-    page.title = 'APP'
+    page.title = 'XFitnes'
     page.theme_mode = ft.ThemeMode.DARK
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.bgcolor = ft.colors.BLACK
     page.window.width = 350  
     page.window.height = 600 
-    page.window.resizable = False 
+    page.window.resizable = True 
     
     app_bar = create_app_bar()
     page.add(app_bar)
@@ -23,7 +24,8 @@ def main(page: ft.Page):
     panel_plans = create_panel_plans(content_area, selected_plan)
 
     # Журнал
-    panel_journal = ft.Row([ft.Text("Журнал")])
+    panel_journal_content = ft.Column()
+    journal_page(page, panel_journal_content)
 
     # Профиль
     panel_profile = ft.Row([ft.Text("Профиль")])
@@ -42,7 +44,7 @@ def main(page: ft.Page):
             show_page(0, content_area, e, page)  # Показать первую страницу по умолчанию
         elif index == 2:
             app_bar.title = ft.Text("Журнал", size=20)
-            page.add(panel_journal)
+            page.add(panel_journal_content)
         elif index == 3:
             app_bar.title = ft.Text("Профиль", size=20)
             page.add(panel_profile)
