@@ -1,6 +1,6 @@
 import flet as ft
 
-def profile_page(page):
+def profile_page(page, logout_callback):
     def go_back(e):
         page.go_back()
 
@@ -61,7 +61,11 @@ def profile_page(page):
     )
 
     logout_button = ft.Container(
-        content=ft.ElevatedButton("Выйти", icon=ft.icons.LOGOUT, on_click=lambda _: page.snack_bar.open(ft.Text("Выход из аккаунта"))),
+        content=ft.ElevatedButton(
+            "Выйти",
+            icon=ft.icons.LOGOUT,
+            on_click=lambda _: logout_callback()
+        ),
         padding=10,
         alignment=ft.alignment.center
     )
