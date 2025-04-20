@@ -7,9 +7,14 @@ def journal_page(page, content_area):
     # Очистка только content_area
     content_area.controls.clear()
 
+    def go_back(e):
+        # Implement the back navigation logic here
+        page.go_back()  # Assuming go_back() is a method to navigate back
+
     app_bar = ft.AppBar(
         title=ft.Text("Журнал тренировок", size=20, color=ft.colors.WHITE),
         bgcolor=ft.colors.DEEP_ORANGE_300,
+        leading=ft.IconButton(icon=ft.icons.ARROW_BACK, on_click=go_back),  # Add back button
     )
 
     # Создаем контейнер для добавления новой тренировки
@@ -91,6 +96,10 @@ def journal_page(page, content_area):
             tile.subtitle.visible = not tile.subtitle.visible
             page.update()
 
+        def close_dialog(e):
+            page.dialog.open = False
+            page.update()
+
         page.dialog = ft.AlertDialog(
             title=ft.Text("Добавить тренировку"),
             content=ft.Column(
@@ -105,7 +114,7 @@ def journal_page(page, content_area):
             ),
             actions=[
                 ft.TextButton("Добавить", on_click=add_workout),
-                ft.TextButton("Отмена", on_click=lambda e: setattr(page.dialog, 'open', False)),
+                ft.TextButton("Отмена", on_click=close_dialog),
             ],
             actions_alignment=ft.MainAxisAlignment.END,
         )

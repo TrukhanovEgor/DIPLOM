@@ -2,6 +2,9 @@ import flet as ft
 from exemples import create_panel_exempless
 from ui import create_app_bar, create_panel_plans, show_page
 from journal.journal import journal_page
+from Profile.profile import profile_page
+
+
 
 def main(page: ft.Page):
     page.title = 'XFitnes'
@@ -28,7 +31,8 @@ def main(page: ft.Page):
     journal_page(page, panel_journal_content)
 
     # Профиль
-    panel_profile = ft.Row([ft.Text("Профиль")])
+    panel_profile = profile_page(page)
+
 
     def navigate(e):
         index = e.control.selected_index
