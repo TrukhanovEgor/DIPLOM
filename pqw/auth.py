@@ -6,54 +6,78 @@ def auth_page(page, on_login_success):
     password_field = ft.TextField(label="Пароль", password=True, can_reveal_password=True, width=300)
 
     message = ft.Text("", size=14, color=ft.colors.RED)
+    mode = {"register": False}
 
-    def try_register(e):
+    def switch_mode(e):
+        mode["register"] = not mode["register"]
+        username_field.value = ""
+        password_field.value = ""
+        message.value = ""
+        update_labels()
+        page.update()
+
+    def update_labels():
+        if mode["register"]:
+            title.value = "Регистрация"
+            action_button.text = "Зарегистрироваться"
+            switch_button.text = "Уже есть аккаунт? Войти"
+        else:
+            title.value = "Вход"
+            action_button.text = "Войти"
+            switch_button.text = "Нет аккаунта? Зарегистрироваться"
+
+    def handle_action(e):
         username = username_field.value.strip()
         password = password_field.value.strip()
 
         if not username or not password:
             message.value = "Поля не могут быть пустыми."
             message.color = ft.colors.RED
-        elif user_exists(username):
-            message.value = "Пользователь с таким именем уже существует."
-            message.color = ft.colors.RED
+        elif mode["register"]:
+            if user_exists(username):
+                message.value = "Пользователь с таким именем уже существует."
+                message.color = ft.colors.RED
+            else:
+                register_user(username, password)
+                message.value = "Регистрация успешна. Войдите."
+                message.color = ft.colors.GREEN
+                switch_mode(None)
         else:
-            register_user(username, password)
-            message.value = "Регистрация успешна. Войдите."
-            message.color = ft.colors.GREEN
+            if not user_exists(username):
+                message.value = "Такой пользователь не зарегистрирован."
+                message.color = ft.colors.RED
+            elif login_user(username, password):
+                message.value = "Успешный вход!"
+                message.color = ft.colors.GREEN
+                page.update()
+                on_login_success(username)
+                return
+            else:
+                message.value = "Неверный пароль."
+                message.color = ft.colors.RED
+
         page.update()
 
-    def try_login(e):
-        username = username_field.value.strip()
-        password = password_field.value.strip()
+    title = ft.Text("Вход", size=28, weight=ft.FontWeight.BOLD)
+    action_button = ft.ElevatedButton("Войти", on_click=handle_action)
+    switch_button = ft.TextButton("Нет аккаунта? Зарегистрироваться", on_click=switch_mode)
 
-        if not username or not password:
-            message.value = "Поля не могут быть пустыми."
-            message.color = ft.colors.RED
-        elif not user_exists(username):
-            message.value = "Такой пользователь не зарегистрирован."
-            message.color = ft.colors.RED
-        elif login_user(username, password):
-            message.value = "Успешный вход!"
-            message.color = ft.colors.GREEN
-            page.update()
-            on_login_success()
-        else:
-            message.value = "Неверный пароль."
-            message.color = ft.colors.RED
-        page.update()
-
-    return ft.Column(
+    form = ft.Column(
         [
-            ft.Text("Вход / Регистрация", size=24, weight=ft.FontWeight.BOLD),
+            title,
             username_field,
             password_field,
-            ft.Row([
-                ft.ElevatedButton("Войти", on_click=try_login),
-                ft.TextButton("Регистрация", on_click=try_register)
-            ]),
-            message
+            message,
+            ft.Row([action_button], alignment=ft.MainAxisAlignment.CENTER),
+            ft.Row([switch_button], alignment=ft.MainAxisAlignment.CENTER)
         ],
+        spacing=20,
         alignment=ft.MainAxisAlignment.CENTER,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
+    )
+
+    return ft.Container(
+        content=form,
+        alignment=ft.alignment.center,
+        expand=True
     )

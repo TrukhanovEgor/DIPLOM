@@ -17,11 +17,15 @@ def main(page: ft.Page):
     page.window.resizable = True
 
     def logout():
+        page.session.clear()  # очищаем сохранённое имя пользователя
         page.clean()
         page.navigation_bar = None
         page.add(auth_page(page, on_login_success))
 
-    def on_login_success():
+    def on_login_success(username):
+        # сохраняем имя пользователя
+        page.session.set("username", username)
+
         page.clean()
 
         app_bar = create_app_bar()
@@ -35,7 +39,10 @@ def main(page: ft.Page):
         panel_journal_content = ft.Column()
         journal_page(page, panel_journal_content)
 
-        panel_profile = profile_page(page, logout_callback=logout)
+        username = page.session.get("username")
+        if username is None:
+            username = "Пользователь"
+        panel_profile = profile_page(page, logout_callback=logout, username=username)
 
         def navigate(e):
             index = e.control.selected_index
