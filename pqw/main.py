@@ -23,9 +23,7 @@ def main(page: ft.Page):
         page.add(auth_page(page, on_login_success))
 
     def on_login_success(username):
-        # сохраняем имя пользователя
         page.session.set("username", username)
-
         page.clean()
 
         app_bar = create_app_bar()
@@ -36,17 +34,13 @@ def main(page: ft.Page):
         content_area = ft.Column()
         panel_plans = create_panel_plans(content_area, selected_plan)
 
-        panel_journal_content = ft.Column()
-        journal_page(page, panel_journal_content)
-
-        username = page.session.get("username")
-        if username is None:
-            username = "Пользователь"
+        # Профиль
         panel_profile = profile_page(page, logout_callback=logout, username=username)
 
         def navigate(e):
             index = e.control.selected_index
             page.clean()
+            page.add(app_bar)
 
             if index == 0:
                 app_bar.title = ft.Text("Упражнения", size=20)
@@ -56,13 +50,14 @@ def main(page: ft.Page):
                 page.add(panel_plans)
                 show_page(0, content_area, e, page)
             elif index == 2:
-                app_bar.title = ft.Text("Журнал", size=20)
-                page.add(panel_journal_content)
+                app_bar.title = ft.Text("Журнал тренировок", size=20)
+                journal_content = ft.Column()
+                journal_page(page, journal_content, username)
+                page.add(journal_content)
             elif index == 3:
                 app_bar.title = ft.Text("Профиль", size=20)
                 page.add(panel_profile)
 
-            page.add(app_bar)
             page.update()
 
         page.navigation_bar = ft.NavigationBar(
@@ -79,7 +74,6 @@ def main(page: ft.Page):
 
         page.add(panel_exemples)
 
-    # Стартовая точка — форма авторизации
     page.add(auth_page(page, on_login_success))
 
 ft.app(target=main)

@@ -1,8 +1,12 @@
 import flet as ft
+from database import get_user_statistics 
 
-def profile_page(page, logout_callback):
+def profile_page(page, logout_callback, username):
     def go_back(e):
         page.go_back()
+
+    # Получаем статистику из базы
+    workout_count, exercise_count, total_sets = get_user_statistics(username)
 
     app_bar = ft.AppBar(
         title=ft.Text("Профиль", size=20, color=ft.colors.WHITE),
@@ -17,13 +21,13 @@ def profile_page(page, logout_callback):
                 alignment=ft.alignment.center,
                 padding=10
             ),
-            ft.Text("Пользователь", size=20, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
-            ft.Text("Тренировок: 0 • С нами: 0 дней", size=14, color=ft.colors.GREY_400),
+            ft.Text(username, size=20, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
+            ft.Text(f"Тренировок: {workout_count} • С нами: 0 дней", size=14, color=ft.colors.GREY_400),
             ft.Row(
                 [
-                    ft.Column([ft.Text("0", size=20, weight=ft.FontWeight.BOLD), ft.Text("Тренировок")], alignment=ft.MainAxisAlignment.CENTER),
-                    ft.Column([ft.Text("0", size=20, weight=ft.FontWeight.BOLD), ft.Text("Упражнений")], alignment=ft.MainAxisAlignment.CENTER),
-                    ft.Column([ft.Text("0", size=20, weight=ft.FontWeight.BOLD), ft.Text("Подходов")], alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Column([ft.Text(str(workout_count), size=20, weight=ft.FontWeight.BOLD), ft.Text("Тренировок")], alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Column([ft.Text(str(exercise_count), size=20, weight=ft.FontWeight.BOLD), ft.Text("Упражнений")], alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Column([ft.Text(str(total_sets), size=20, weight=ft.FontWeight.BOLD), ft.Text("Подходов")], alignment=ft.MainAxisAlignment.CENTER),
                 ],
                 alignment=ft.MainAxisAlignment.SPACE_EVENLY,
                 spacing=20,
@@ -33,6 +37,15 @@ def profile_page(page, logout_callback):
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         spacing=10,
     )
+
+    ft.ListTile(
+    leading=ft.Icon(ft.icons.BAR_CHART),
+    title=ft.Text("Замеры"),
+    on_click=lambda _: page.go("/measurements")
+    ),
+
+   
+
 
     settings = ft.Column(
         controls=[
