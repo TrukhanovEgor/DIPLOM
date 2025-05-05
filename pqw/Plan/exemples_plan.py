@@ -220,4 +220,3 @@ def exemples_plan(page, content_area):
 
     page.add(app_bar)
     content_area.controls.append(content)
-    page.update()

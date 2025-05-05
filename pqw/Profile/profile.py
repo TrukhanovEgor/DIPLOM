@@ -1,10 +1,12 @@
 import flet as ft
 from database import get_user_statistics 
+from .measurements import measurements
 
-def profile_page(page, logout_callback, username):
+def profile_page(page, logout_callback, username, ):
     def go_back(e):
         page.go_back()
-
+    content_area = ft.Column()
+    page.add(content_area) 
     # Получаем статистику из базы
     workout_count, exercise_count, total_sets = get_user_statistics(username)
 
@@ -13,7 +15,7 @@ def profile_page(page, logout_callback, username):
         bgcolor=ft.colors.DEEP_ORANGE_300,
         leading=ft.IconButton(icon=ft.icons.ARROW_BACK, on_click=go_back),
     )
-
+    
     user_info = ft.Column(
         controls=[
             ft.Container(
@@ -38,17 +40,19 @@ def profile_page(page, logout_callback, username):
         spacing=10,
     )
 
-    ft.ListTile(
-    leading=ft.Icon(ft.icons.BAR_CHART),
-    title=ft.Text("Замеры"),
-    on_click=lambda _: page.go("/measurements")
-    ),
-
-   
-
-
     settings = ft.Column(
         controls=[
+            ft.ListTile(
+                leading=ft.Icon(ft.icons.BAR_CHART_SHARP),
+                title=ft.Text("Замеры"),
+                on_click=lambda e: measurements(
+                    page=page,
+                    logout_callback=logout_callback,
+                    username=username,
+                    return_to_profile=lambda: page.add(profile_page(page, logout_callback, username))
+                ),
+            ),
+
             ft.ListTile(
                 leading=ft.Icon(ft.icons.SETTINGS),
                 title=ft.Text("Настройки приложения"),
