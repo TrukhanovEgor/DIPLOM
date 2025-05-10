@@ -11,7 +11,7 @@ def main(page: ft.Page):
     page.title = 'XFitnes'
     page.theme_mode = ft.ThemeMode.DARK
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.bgcolor = ft.colors.BLACK
+    page.bgcolor = ft.Colors.BLACK  # Исправлено: colors -> Colors
     page.window.width = 350  
     page.window.height = 600 
     page.window.resizable = True
@@ -62,13 +62,13 @@ def main(page: ft.Page):
 
         page.navigation_bar = ft.NavigationBar(
             destinations=[
-                ft.NavigationBarDestination(icon=ft.icons.FITNESS_CENTER, label="Упражнения"),
-                ft.NavigationBarDestination(icon=ft.icons.EVENT, label="Планы"),
-                ft.NavigationBarDestination(icon=ft.icons.SCHEDULE, label="Журнал"),
-                ft.NavigationBarDestination(icon=ft.icons.PERSON, label="Профиль"),
+                ft.NavigationBarDestination(icon=ft.Icons.FITNESS_CENTER, label="Упражнения"),  # Исправлено: icons -> Icons
+                ft.NavigationBarDestination(icon=ft.Icons.EVENT, label="Планы"),  # Исправлено: icons -> Icons
+                ft.NavigationBarDestination(icon=ft.Icons.SCHEDULE, label="Журнал"),  # Исправлено: icons -> Icons
+                ft.NavigationBarDestination(icon=ft.Icons.PERSON, label="Профиль"),  # Исправлено: icons -> Icons
             ],
             on_change=navigate,
-            bgcolor=ft.colors.DEEP_ORANGE_300,
+            bgcolor=ft.Colors.DEEP_ORANGE_300,  # Исправлено: colors -> Colors
             selected_index=0,
         )
 

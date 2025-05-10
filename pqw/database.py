@@ -133,6 +133,32 @@ def get_user_statistics(username):
     total_sets = result[2] or 0
     return workout_count, exercise_count, total_sets
 
+def delete_workout_from_db(username, workout_name, exercise_name, sets_count, reps_count, muscle_group):
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+
+    # Получаем ID записи, которую нужно удалить
+    cursor.execute("""
+        SELECT id FROM workouts
+        WHERE username = ?
+          AND workout_name = ?
+          AND exercise_name = ?
+          AND sets_count = ?
+          AND reps_count = ?
+          AND muscle_group = ?
+        LIMIT 1
+    """, (username, workout_name, exercise_name, sets_count, reps_count, muscle_group))
+    
+    row = cursor.fetchone()
+    if row:
+        workout_id = row[0]
+        cursor.execute("DELETE FROM workouts WHERE id = ?", (workout_id,))
+        conn.commit()
+
+    conn.close()
+
+
+
 def save_measurement(username, parameter, date, value):
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()

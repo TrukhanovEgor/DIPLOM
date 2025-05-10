@@ -1,5 +1,5 @@
 import flet as ft
-from database import save_workout, get_user_workouts
+from database import delete_workout_from_db, save_workout, get_user_workouts
 
 def journal_page(page, content_area, username):
     if page is None:
@@ -7,11 +7,9 @@ def journal_page(page, content_area, username):
 
     content_area.controls.clear()
 
-
     app_bar = ft.AppBar(
         title=ft.Text("Журнал тренировок", size=20, color=ft.colors.WHITE),
         bgcolor=ft.colors.DEEP_ORANGE_300,
-        
     )
 
     def toggle_visibility(tile):
@@ -19,7 +17,7 @@ def journal_page(page, content_area, username):
         page.update()
 
     def create_tile(workout_name, exercise_name, sets_count, reps_count, muscle_group):
-        return ft.ListTile(
+        tile = ft.ListTile(
             title=ft.Text(f"Тренировка: {workout_name}", size=16, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
             subtitle=ft.Column([
                 ft.Text(f"Упражнение: {exercise_name}", size=14, color=ft.colors.WHITE),
@@ -28,7 +26,7 @@ def journal_page(page, content_area, username):
                 ft.Text(f"Группа мышц: {muscle_group}", size=14, color=ft.colors.WHITE),
             ], visible=False),
             bgcolor=ft.colors.GREY_900,
-            on_click=lambda e: toggle_visibility(),
+            on_click=lambda e: toggle_visibility(tile),  # Передаём tile сюда
             trailing=ft.IconButton(
                 icon=ft.icons.DELETE,
                 icon_color=ft.colors.RED,
@@ -41,12 +39,11 @@ def journal_page(page, content_area, username):
                 )
             ),
         )
+        return tile
 
     def delete_workout(workout_name, exercise_name, sets_count, reps_count, muscle_group):
-        # Предполагаемая функция удаления (нужно реализовать в database.py)
-        # delete_workout_from_db(username, workout_name, exercise_name, sets_count, reps_count, muscle_group)
-        print(f"Удаление тренировки: {workout_name}, {exercise_name}")
-        refresh_workouts()  # Обновляем список после удаления
+        delete_workout_from_db(username, workout_name, exercise_name, sets_count, reps_count, muscle_group)
+        refresh_workouts()
 
     def refresh_workouts():
         workouts_list.controls.clear()
@@ -104,15 +101,15 @@ def journal_page(page, content_area, username):
                 reps_count=int(reps_count.value),
                 muscle_group=muscle_group_picker.value,
             )
-            page.dialog.open = False
-            refresh_workouts()  # Обновляем список после добавления
+            dialog.open = False
+            refresh_workouts()
             page.update()
 
         def close_dialog(e):
-            page.dialog.open = False
+            dialog.open = False
             page.update()
 
-        page.dialog = ft.AlertDialog(
+        dialog = ft.AlertDialog(
             title=ft.Text("Добавить тренировку"),
             content=ft.Column(
                 [
@@ -130,7 +127,12 @@ def journal_page(page, content_area, username):
             ],
             actions_alignment=ft.MainAxisAlignment.END,
         )
-        page.dialog.open = True
+
+        # Добавим в overlay, если еще не добавлен
+        if dialog not in page.overlay:
+            page.overlay.append(dialog)
+
+        dialog.open = True
         page.update()
 
     add_workout_button = ft.ElevatedButton(
