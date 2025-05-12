@@ -6,80 +6,272 @@ from Plan.plan_push_pull import plan_push_pull
 from Plan.plan_body_shape import plan_body_shape
 from Plan.plan_abs import plan_abs
 
-def exemples_plan(page, content_area):
-    if page is None:
-        return
+def exemples_plan(page: ft.Page, content: ft.Column):
+    content.controls.clear()
 
-    def open_plan(plan_func):
+    
+    title_text = ft.Text(
+        "Выберите ваш план",
+        size=22,
+        weight=ft.FontWeight.BOLD,
+        color=ft.colors.WHITE,
+        text_align=ft.TextAlign.CENTER,
+        font_family="Arial",
+    )
+
+    # открытия плана тренировки
+    def open_plan(plan_func, plan_name):
         def handler(e):
-            content_area.controls.clear()
-            plan_func(page, content_area)
+            content.controls.clear()
+            page.snack_bar = ft.SnackBar(ft.Text(f"Открытие плана: {plan_name}"))
+            page.snack_bar.open = True
+            plan_func(page, content)
             page.update()
         return handler
 
-    content_area.controls.clear()
-
-    app_bar = ft.AppBar(
-        title=ft.Text("Планы", size=20, color=ft.colors.WHITE),
-        bgcolor=ft.colors.DEEP_ORANGE_300,
-    )
-
-    def create_button(img_url, text, handler, width=150, height=180):
-        return ft.GestureDetector(
-            on_tap=handler,
-            content=ft.Container(
-                content=ft.Column(
-                    [
-                        ft.Image(src=img_url, width=120, height=120, fit=ft.ImageFit.CONTAIN),
-                        ft.Text(text, size=14, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE, text_align=ft.TextAlign.CENTER),
-                    ],
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                ),
-                padding=5,
-                bgcolor=ft.colors.GREY_900,
-                border_radius=15,
-                width=width,
-                height=height,
-            )
+    # создания карточки плана
+    def create_plan_card(img_url, title, description, handler, location, width=150, height=200, is_wide=False):
+        return ft.Container(
+            content=ft.Stack(
+                [
+                    ft.Image(
+                        src=img_url,
+                        width=width,
+                        height=height,
+                        fit=ft.ImageFit.COVER,
+                        border_radius=12,
+                        opacity=0.6,
+                        error_content=ft.Text("Ошибка изображения", color=ft.colors.RED_400, size=12),
+                    ),
+                    ft.Container(
+                        gradient=ft.LinearGradient(
+                            colors=["#B3000000", ft.colors.TRANSPARENT],  # Чёрный с прозрачностью 70%
+                            begin=ft.alignment.bottom_center,
+                            end=ft.alignment.top_center,
+                        ),
+                        width=width,
+                        height=height,
+                        border_radius=12,
+                    ),
+                    ft.Column(
+                        [
+                            ft.Text(
+                                title,
+                                size=16,
+                                weight=ft.FontWeight.BOLD,
+                                color=ft.colors.WHITE,
+                                text_align=ft.TextAlign.CENTER,
+                                font_family="Arial",
+                                max_lines=2,
+                                overflow=ft.TextOverflow.ELLIPSIS,
+                            ),
+                            ft.Text(
+                                location,
+                                size=12,
+                                color=ft.colors.DEEP_ORANGE_300,
+                                text_align=ft.TextAlign.CENTER,
+                                font_family="Arial",
+                            ),
+                            ft.Text(
+                                description,
+                                size=12,
+                                color=ft.colors.WHITE70,
+                                text_align=ft.TextAlign.CENTER,
+                                max_lines=2,
+                                overflow=ft.TextOverflow.ELLIPSIS,
+                                font_family="Arial",
+                            ),
+                            ft.ElevatedButton(
+                                text="Открыть",
+                                on_click=handler,
+                                style=ft.ButtonStyle(
+                                    bgcolor=ft.colors.DEEP_ORANGE_300,
+                                    color=ft.colors.WHITE,
+                                    shape=ft.RoundedRectangleBorder(radius=8),
+                                    padding=ft.padding.symmetric(horizontal=20, vertical=10),
+                                ),
+                                width=100,
+                            ),
+                        ],
+                        alignment=ft.MainAxisAlignment.END,
+                        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                        spacing=8,
+                        expand=True,
+                    ),
+                ],
+            ),
+            padding=10,
+            width=width,
+            height=height,
+            margin=ft.margin.all(8),
+            border_radius=12,
+            bgcolor=ft.colors.GREY_900,
+            shadow=[
+                ft.BoxShadow(
+                    color="#66000000",  # Чёрный с прозрачностью 40%
+                    blur_radius=8,
+                    offset=ft.Offset(0, 4),
+                    spread_radius=1,
+                )
+            ],
         )
 
-    buttons = [
-        create_button(
-            "https://www.lyfta.app/_next/image?url=https%3A%2F%2Flyfta.app%2Fimages%2Fexercises%2F37241101.png&w=640&q=10",
-            "Фитнес клуб", open_plan(plan_fitness_club)
-        ),
-        create_button(
-            "https://www.lyfta.app/_next/image?url=https%3A%2F%2Flyfta.app%2Fimages%2Fexercises%2F04651101.png&w=384&q=10",
-            "Комплекс для дома", open_plan(plan_home)
-        ),
-        create_button(
-            "https://www.lyfta.app/_next/image?url=https%3A%2F%2Flyfta.app%2Fimages%2Fexercises%2F06521101.png&w=384&q=10",
-            "Домашний спортзал", open_plan(plan_gym), width=300, height=150
-        ),
-        create_button(
-            "https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02391101-Cable-Straight-Back-Seated-Row_Back_small.png&w=640&q=100",
-            "Жим и Тяги", open_plan(plan_push_pull)
-        ),
-        create_button(
-            "https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F45111101-Bridge-Pose-Setu-Bandhasana-(male)_Stretching_small.png&w=640&q=100",
-            "Стройное тело", open_plan(plan_body_shape)
-        ),
-        create_button(
-            "https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02741101-Crunch-Floor-m_waist_small.png&w=640&q=100",
-            "Рельефный пресс", open_plan(plan_abs), width=300, height=150
-        ),
+    # Список планов с категориями для дома и спортзала
+    plans = [
+        {
+            "title": "Убрать живот",
+            "description": "Сжигание жира и укрепление кора.",
+            "img_url": "https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02741101-Crunch-Floor-m_waist_small.png&w=640&q=100",
+            "handler": open_plan(plan_abs, "Убрать живот"),
+            "location": "Для дома",
+            "width": 150,
+            "height": 200,
+            "is_wide": False,
+        },
+        {
+            "title": "Набрать мышцы",
+            "description": "Силовые тренировки для роста мышц.",
+            "img_url": "https://www.lyfta.app/_next/image?url=https%3A%2F%2Flyfta.app%2Fimages%2Fexercises%2F37241101.png&w=640&q=10",
+            "handler": open_plan(plan_fitness_club, "Набрать мышцы"),
+            "location": "Для спортзала",
+            "width": 150,
+            "height": 200,
+            "is_wide": False,
+        },
+        {
+            "title": "Рельефный пресс",
+            "description": "Чёткий рельеф пресса за 8 недель.",
+            "img_url": "https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02741101-Crunch-Floor-m_waist_small.png&w=640&q=100",
+            "handler": open_plan(plan_abs, "Рельефный пресс"),
+            "location": "Для дома",
+            "width": 320,
+            "height": 180,
+            "is_wide": True,
+        },
+        {
+            "title": "Силовая выносливость",
+            "description": "Сила и выносливость для интенсивных тренировок.",
+            "img_url": "https://www.lyfta.app/_next/image?url=https%3A%2F%2Flyfta.app%2Fimages%2Fexercises%2F06521101.png&w=384&q=10",
+            "handler": open_plan(plan_gym, "Силовая выносливость"),
+            "location": "Для спортзала",
+            "width": 150,
+            "height": 200,
+            "is_wide": False,
+        },
+        {
+            "title": "Гибкость и растяжка",
+            "description": "Улучшение гибкости и восстановление.",
+            "img_url": "https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F45111101-Bridge-Pose-Setu-Bandhasana-(male)_Stretching_small.png&w=640&q=100",
+            "handler": open_plan(plan_body_shape, "Гибкость и растяжка"),
+            "location": "Для дома",
+            "width": 150,
+            "height": 200,
+            "is_wide": False,
+        },
+        {
+            "title": "Жим и тяги",
+            "description": "Силовые упражнения для верха тела.",
+            "img_url": "https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02391101-Cable-Straight-Back-Seated-Row_Back_small.png&w=640&q=100",
+            "handler": open_plan(plan_push_pull, "Жим и тяги"),
+            "location": "Для спортзала",
+            "width": 320,
+            "height": 180,
+            "is_wide": True,
+        },
     ]
 
-    rows = [ft.Row(controls=buttons[i:i+2], spacing=15, alignment=ft.MainAxisAlignment.CENTER) for i in range(0, len(buttons), 2)]
+    # Разбиваем карточки на строки с горизонтальной прокруткой
+    rows = []
+    i = 0
+    while i < len(plans):
+        if i % 3 == 0 and i + 1 < len(plans):  # Две карточки в строке
+            rows.append(
+                ft.Container(
+                    content=ft.Row(
+                        controls=[
+                            create_plan_card(
+                                plans[i]["img_url"],
+                                plans[i]["title"],
+                                plans[i]["description"],
+                                plans[i]["handler"],
+                                plans[i]["location"],
+                                plans[i]["width"],
+                                plans[i]["height"],
+                                plans[i]["is_wide"],
+                            ),
+                            create_plan_card(
+                                plans[i + 1]["img_url"],
+                                plans[i + 1]["title"],
+                                plans[i + 1]["description"],
+                                plans[i + 1]["handler"],
+                                plans[i + 1]["location"],
+                                plans[i + 1]["width"],
+                                plans[i + 1]["height"],
+                                plans[i + 1]["is_wide"],
+                            ),
+                        ],
+                        spacing=10,
+                        alignment=ft.MainAxisAlignment.START,
+                        scroll=ft.ScrollMode.AUTO,  # Горизонтальная прокрутка
+                    ),
+                    padding=ft.padding.symmetric(horizontal=10),
+                )
+            )
+            i += 2
+        else:  # Одна карточка на всю строку
+            rows.append(
+                ft.Container(
+                    content=ft.Row(
+                        controls=[
+                            create_plan_card(
+                                plans[i]["img_url"],
+                                plans[i]["title"],
+                                plans[i]["description"],
+                                plans[i]["handler"],
+                                plans[i]["location"],
+                                plans[i]["width"],
+                                plans[i]["height"],
+                                plans[i]["is_wide"],
+                            ),
+                        ],
+                        spacing=10,
+                        alignment=ft.MainAxisAlignment.START,
+                        scroll=ft.ScrollMode.AUTO,  # Горизонтальная прокрутка
+                    ),
+                    padding=ft.padding.symmetric(horizontal=10),
+                )
+            )
+            i += 1
 
-    content = ft.ListView(
-        controls=rows,
-        width=400,
-        height=400,
-        spacing=10,
+    # Создаем контейнер с вертикальной прокруткой
+    content.controls.append(
+        ft.Column(
+            [
+                ft.Container(
+                    content=title_text,
+                    alignment=ft.alignment.center,
+                    padding=ft.padding.only(top=15, bottom=10),
+                ),
+                ft.Column(
+                    controls=rows,
+                    spacing=10,
+                    expand=True,
+                ),
+            ],
+            alignment=ft.MainAxisAlignment.START,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            expand=True,
+        )
     )
 
+    content.scroll = ft.ScrollMode.AUTO  # Вертикальная прокрутка для всего контента
+    page.update()
 
-
-    page.add(app_bar)
-    content_area.controls.append(content)
+if __name__ == "__main__":
+    def main(page: ft.Page):
+        page.title = "Тренировочные планы"
+        page.bgcolor = ft.colors.BLACK
+        content_area = ft.Column()
+        exemples_plan(page, content_area)
+        page.add(content_area)
+    ft.app(target=main)
