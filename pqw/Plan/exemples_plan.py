@@ -19,15 +19,19 @@ def exemples_plan(page: ft.Page, content: ft.Column):
         font_family="Arial",
     )
 
-    # открытия плана тренировки
     def open_plan(plan_func, plan_name):
         def handler(e):
             content.controls.clear()
             page.snack_bar = ft.SnackBar(ft.Text(f"Открытие плана: {plan_name}"))
             page.snack_bar.open = True
-            plan_func(page, content)
+
+            def go_back(e):
+                exemples_plan(page, content)
+
+            plan_func(page, content, go_back)
             page.update()
         return handler
+
 
     # создания карточки плана
     def create_plan_card(img_url, title, description, handler, location, width=150, height=200, is_wide=False):
@@ -45,7 +49,7 @@ def exemples_plan(page: ft.Page, content: ft.Column):
                     ),
                     ft.Container(
                         gradient=ft.LinearGradient(
-                            colors=["#B3000000", ft.colors.TRANSPARENT],  # Чёрный с прозрачностью 70%
+                            colors=["#B3000000", ft.colors.TRANSPARENT],  # Чёрный розрачностью 70%
                             begin=ft.alignment.bottom_center,
                             end=ft.alignment.top_center,
                         ),
@@ -90,7 +94,7 @@ def exemples_plan(page: ft.Page, content: ft.Column):
                                     shape=ft.RoundedRectangleBorder(radius=8),
                                     padding=ft.padding.symmetric(horizontal=20, vertical=10),
                                 ),
-                                width=100,
+                                width=120,
                             ),
                         ],
                         alignment=ft.MainAxisAlignment.END,
