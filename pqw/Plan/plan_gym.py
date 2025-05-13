@@ -145,7 +145,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Опускайтесь, пока грудь почти не коснётся пола.\n"
                         "• Совет: держите тело прямым, напрягайте пресс.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F01361101-Push-Up_Chest_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F06621101-Push-up-m_Chest-FIX_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -156,7 +156,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Опускайтесь, напрягая трицепсы.\n"
                         "• Совет: не разводите локти, держите тело прямым.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F01361101-Push-Up_Chest_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02831101-Diamond-Push-up_Upper-Arms-FIX_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -167,7 +167,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Разводите руки в стороны, слегка сгибая локти.\n"
                         "• Совет: двигайтесь медленно, чувствуйте грудь.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F01361101-Push-Up_Chest_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F03081101-Dumbbell-Fly_Chest-FIX_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -178,7 +178,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Поднимайте тело, сгибая локти.\n"
                         "• Совет: держите локти направленными назад.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F01361101-Push-Up_Chest_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F34431101-Dip-on-Floor-with-Chair_Chest_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -189,7 +189,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Сгибайте локти, опуская бутылку за голову.\n"
                         "• Совет: держите локти неподвижно, работайте трицепсом.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F01361101-Push-Up_Chest_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F04301101-Dumbbell-Standing-Triceps-Extension_Upper-Arms_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -212,7 +212,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Тяните бутылки к поясу, сводя лопатки.\n"
                         "• Совет: не округляйте спину, работайте спиной.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02391101-Cable-Straight-Back-Seated-Row_Back_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02921101-Dumbbell-Bent-over-Row_back_Back-AFIX_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -223,7 +223,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Поднимайте руки, грудь и ноги одновременно.\n"
                         "• Совет: задержитесь на 1–2 сек вверху.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02391101-Cable-Straight-Back-Seated-Row_Back_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F49391101-Superman-Row-(female)_Back_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -234,7 +234,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Тяните концы к груди, сводя лопатки.\n"
                         "• Совет: держите спину прямой, не наклоняйтесь.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02391101-Cable-Straight-Back-Seated-Row_Back_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F00271101-Barbell-Bent-Over-Row_Back-FIX_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -245,7 +245,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Сгибайте руки, поднимая бутылки к плечам.\n"
                         "• Совет: не раскачивайтесь, работайте бицепсом.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02391101-Cable-Straight-Back-Seated-Row_Back_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02851101-Dumbbell-Alternate-Biceps-Curl_Upper-Arms-AFIX_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -256,7 +256,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Сгибайте руки, поднимая бутылки к плечам.\n"
                         "• Совет: держите локти неподвижно.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02391101-Cable-Straight-Back-Seated-Row_Back_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02941101-Dumbbell-Biceps-Curl_Upper-Arms_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -267,7 +267,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Напрягайте бицепсы, не двигая руками.\n"
                         "• Совет: дышите ровно, фокусируйтесь на напряжении.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02391101-Cable-Straight-Back-Seated-Row_Back_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F03121101-Dumbbell-Hammer-Curl-II_Upper-Arms_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -279,7 +279,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Приседайте до параллели бёдер с полом.\n"
                         "• Совет: держите спину прямой, колени в линии с носками.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F03311101-Squat_Thighs_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F63361101-Bodyweight-Slow-To-Explosive-Squats-(male)_Hips_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -290,7 +290,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Возвращайтесь в исходное положение.\n"
                         "• Совет: держите корпус прямым, не наклоняйтесь.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F03311101-Squat_Thighs_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F09091101-Band-Lunges_Thighs_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -301,7 +301,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Медленно опускайтесь, растягивая икры.\n"
                         "• Совет: для сложности держите бутылки в руках.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F03311101-Squat_Thighs_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F13731101-Bodyweight-Standing-Calf-Raise_Calves_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -312,7 +312,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Выжимайте бутылки вверх, выпрямляя руки.\n"
                         "• Совет: напрягайте пресс, не прогибайтесь.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F01361101-Push-Up_Chest_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F04051101-Dumbbell-Seated-Shoulder-Press_Shoulders_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -323,7 +323,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Слегка сгибайте локти, медленно опускайте.\n"
                         "• Совет: не используйте инерцию, работайте плечами.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F01361101-Push-Up_Chest_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F03341101-Dumbbell-Lateral-Raise_shoulder-AFIX_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
@@ -334,7 +334,7 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                         "• Поочерёдно поднимайте одну руку вперёд.\n"
                         "• Совет: держите баланс, не раскачивайтесь.",
             icon=ft.icons.FITNESS_CENTER,
-            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F01361101-Push-Up_Chest_small.png&w=640&q=100",
+            img_url="https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F04651101-Front-Plank_Waist_small.png&w=640&q=100",
             width=320,
             height=240,
         ),
