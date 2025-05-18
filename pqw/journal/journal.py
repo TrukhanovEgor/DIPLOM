@@ -1,5 +1,6 @@
 import flet as ft
-from database import delete_workout_from_db, save_workout, get_user_workouts
+from database import delete_workout_from_db, get_user_workouts
+from .workout_creator_page import workout_creator_page
 
 def journal_page(page, content_area, username):
     if page is None:
@@ -16,46 +17,53 @@ def journal_page(page, content_area, username):
         tile.subtitle.visible = not tile.subtitle.visible
         page.update()
 
-    def create_tile(workout_name, exercise_name, sets_count, reps_count, muscle_group):
+    # Группируем упражнения по названию тренировки
+    def get_grouped_workouts():
+        all_w = get_user_workouts(username)
+        grouped = {}
+        for w in all_w:
+            workout_name = w[0]
+            exercise_info = w[1:]
+            grouped.setdefault(workout_name, []).append(exercise_info)
+        return grouped
+
+    def create_tile(workout_name, exercises):
+        subtitle_controls = []
+        for exercise_name, sets_count, reps_count, muscle_group in exercises:
+            subtitle_controls.append(
+                ft.Text(f"{exercise_name} | {sets_count} x {reps_count} | {muscle_group}", color=ft.colors.WHITE)
+            )
         tile = ft.ListTile(
-            title=ft.Text(f"Тренировка: {workout_name}", size=16, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
-            subtitle=ft.Column([
-                ft.Text(f"Упражнение: {exercise_name}", size=14, color=ft.colors.WHITE),
-                ft.Text(f"Подходы: {sets_count}", size=14, color=ft.colors.WHITE),
-                ft.Text(f"Повторения: {reps_count}", size=14, color=ft.colors.WHITE),
-                ft.Text(f"Группа мышц: {muscle_group}", size=14, color=ft.colors.WHITE),
-            ], visible=False),
+            title=ft.Text(f"{workout_name}", size=16, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
+            subtitle=ft.Column(subtitle_controls, visible=False),
             bgcolor=ft.colors.GREY_900,
-            on_click=lambda e: toggle_visibility(tile),  # Передаём tile сюда
+            on_click=lambda e: toggle_visibility(tile),
             trailing=ft.IconButton(
                 icon=ft.icons.DELETE,
                 icon_color=ft.colors.RED,
-                on_click=lambda e: delete_workout(
-                    workout_name=workout_name,
-                    exercise_name=exercise_name,
-                    sets_count=sets_count,
-                    reps_count=reps_count,
-                    muscle_group=muscle_group
-                )
+                on_click=lambda e: delete_whole_workout(workout_name)
             ),
         )
         return tile
 
-    def delete_workout(workout_name, exercise_name, sets_count, reps_count, muscle_group):
-        delete_workout_from_db(username, workout_name, exercise_name, sets_count, reps_count, muscle_group)
+    def delete_whole_workout(workout_name):
+        # Удаляет все упражнения этой тренировки
+        all_w = get_user_workouts(username)
+        for w in all_w:
+            if w[0] == workout_name:
+                delete_workout_from_db(username, *w)
         refresh_workouts()
 
     def refresh_workouts():
         workouts_list.controls.clear()
-        for workout in get_user_workouts(username):
-            workout_name, exercise_name, sets_count, reps_count, muscle_group = workout
-            tile = create_tile(workout_name, exercise_name, sets_count, reps_count, muscle_group)
+        grouped = get_grouped_workouts()
+        for workout_name, exercises in grouped.items():
+            tile = create_tile(workout_name, exercises)
             workouts_list.controls.append(tile)
         page.update()
 
     workouts_list = ft.ListView(controls=[], width=None, height=500, spacing=10)
 
-    # Фильтрация по группе мышц
     muscle_groups = ["Все", "Грудные мышцы", "Бицепс", "Трицепс", "Широчайшие", "Трапеция", "Дельты", "Пресс", "Ноги"]
     filter_dropdown = ft.Dropdown(
         label="Фильтр по группе мышц",
@@ -66,79 +74,23 @@ def journal_page(page, content_area, username):
 
     def apply_filter():
         workouts_list.controls.clear()
-        workouts = get_user_workouts(username)
+        grouped = get_grouped_workouts()
         selected_filter = filter_dropdown.value
-        if selected_filter != "Все":
-            workouts = [w for w in workouts if w[4] == selected_filter]  # w[4] — muscle_group
-        for workout in workouts:
-            workout_name, exercise_name, sets_count, reps_count, muscle_group = workout
-            tile = create_tile(workout_name, exercise_name, sets_count, reps_count, muscle_group)
-            workouts_list.controls.append(tile)
+        for workout_name, exercises in grouped.items():
+            if selected_filter == "Все" or any(ex[3] == selected_filter for ex in exercises):
+                tile = create_tile(workout_name, exercises)
+                workouts_list.controls.append(tile)
         page.update()
 
-    def show_add_workout_dialog(page):
-        workout_name = ft.TextField(label="Название тренировки")
-        exercise_name = ft.TextField(label="Название упражнения")
-        sets_count = ft.TextField(label="Количество подходов", keyboard_type=ft.KeyboardType.NUMBER)
-        reps_count = ft.TextField(label="Количество повторений", keyboard_type=ft.KeyboardType.NUMBER)
-        muscle_group_picker = ft.Dropdown(
-            label="Группа мышц",
-            options=[ft.dropdown.Option(mg) for mg in muscle_groups[1:]],  # Исключаем "Все"
-        )
-
-        def add_workout(e):
-            if not all([workout_name.value, exercise_name.value, sets_count.value, reps_count.value, muscle_group_picker.value]):
-                page.snack_bar = ft.SnackBar(ft.Text("Заполните все поля!"))
-                page.snack_bar.open = True
-                page.update()
-                return
-
-            save_workout(
-                username=username,
-                workout_name=workout_name.value,
-                exercise_name=exercise_name.value,
-                sets_count=int(sets_count.value),
-                reps_count=int(reps_count.value),
-                muscle_group=muscle_group_picker.value,
-            )
-            dialog.open = False
-            refresh_workouts()
-            page.update()
-
-        def close_dialog(e):
-            dialog.open = False
-            page.update()
-
-        dialog = ft.AlertDialog(
-            title=ft.Text("Добавить тренировку"),
-            content=ft.Column(
-                [
-                    workout_name,
-                    exercise_name,
-                    sets_count,
-                    reps_count,
-                    muscle_group_picker,
-                ],
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            ),
-            actions=[
-                ft.TextButton("Добавить", on_click=add_workout),
-                ft.TextButton("Отмена", on_click=close_dialog),
-            ],
-            actions_alignment=ft.MainAxisAlignment.END,
-        )
-
-        # Добавим в overlay, если еще не добавлен
-        if dialog not in page.overlay:
-            page.overlay.append(dialog)
-
-        dialog.open = True
+    def go_to_create_workout(_):
+        content_area.controls.clear()
         page.update()
+        workout_creator_page(page, content_area, username, on_workout_saved=refresh_workouts)
 
-    add_workout_button = ft.ElevatedButton(
-        "Добавить тренировку",
+    start_workout_button = ft.ElevatedButton(
+        "Начать тренировку",
         icon=ft.icons.ADD,
-        on_click=lambda _: show_add_workout_dialog(page),
+        on_click=go_to_create_workout,
         style=ft.ButtonStyle(
             bgcolor=ft.colors.DEEP_ORANGE_300,
             color=ft.colors.WHITE,
@@ -149,7 +101,7 @@ def journal_page(page, content_area, username):
     content = ft.Column(
         controls=[
             ft.Row([filter_dropdown], alignment=ft.MainAxisAlignment.CENTER),
-            add_workout_button,
+            start_workout_button,
             workouts_list,
         ],
         spacing=20,
@@ -162,7 +114,6 @@ def journal_page(page, content_area, username):
         expand=True,
     )
 
-    # Инициализация списка тренировок
     refresh_workouts()
 
     page.add(app_bar)

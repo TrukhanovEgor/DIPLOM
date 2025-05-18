@@ -31,8 +31,9 @@ def main(page: ft.Page):
 
         panel_exemples = create_panel_exempless(page)
         selected_plan = ft.Text(size=24, weight=ft.FontWeight.BOLD)
-        content_area = ft.Column()
+        content_area = ft.Column(expand=True)
         panel_plans = create_panel_plans(content_area, selected_plan)
+        panel_progress = ft.Text("Popka")
 
         # Профиль
         panel_profile = profile_page(page, logout_callback=logout, username=username)
@@ -55,8 +56,12 @@ def main(page: ft.Page):
                 journal_page(page, journal_content, username)
                 page.add(journal_content)
             elif index == 3:
+                app_bar.title = ft.Text("Прогресс", size=20)
+                page.add(panel_progress)
+            elif index == 4:
                 app_bar.title = ft.Text("Профиль", size=20)
                 page.add(panel_profile)
+            
 
             page.update()
 
@@ -65,6 +70,7 @@ def main(page: ft.Page):
                 ft.NavigationBarDestination(icon=ft.Icons.FITNESS_CENTER, label="Упражнения"),
                 ft.NavigationBarDestination(icon=ft.Icons.EVENT, label="Планы"),
                 ft.NavigationBarDestination(icon=ft.Icons.SCHEDULE, label="Журнал"),
+                ft.NavigationBarDestination(icon=ft.Icons.TIMELINE, label="Прогресс"),
                 ft.NavigationBarDestination(icon=ft.Icons.PERSON, label="Профиль"), 
             ],
             on_change=navigate,

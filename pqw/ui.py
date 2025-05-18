@@ -65,7 +65,7 @@ def show_personal_content(page, content_area):
                         icon_color="DEEP_ORANGE_300",
                         icon_size=40,
                         tooltip="Добавить",
-                        on_click=lambda e: create_new_training(content_area),
+                        on_click=lambda e:(content_area),
                     ),
                 ],
                 alignment=ft.MainAxisAlignment.END,
