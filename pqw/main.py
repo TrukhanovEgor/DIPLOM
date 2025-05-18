@@ -5,6 +5,7 @@ from exemples import create_panel_exempless
 from ui import create_app_bar, create_panel_plans, show_page
 from journal.journal import journal_page
 from Profile.profile import profile_page
+from Progress.Progress import progress_page
 
 def main(page: ft.Page):
     init_db()
@@ -33,7 +34,7 @@ def main(page: ft.Page):
         selected_plan = ft.Text(size=24, weight=ft.FontWeight.BOLD)
         content_area = ft.Column(expand=True)
         panel_plans = create_panel_plans(content_area, selected_plan)
-        panel_progress = ft.Text("Popka")
+        panel_progress = progress_page (page)
 
         # Профиль
         panel_profile = profile_page(page, logout_callback=logout, username=username)
