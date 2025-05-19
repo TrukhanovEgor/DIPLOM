@@ -13,6 +13,7 @@ def init_db():
     ''')
 
     # Создание таблицы workouts
+    
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS workouts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -21,7 +22,10 @@ def init_db():
         exercise_name TEXT NOT NULL,
         sets_count INTEGER,
         reps_count INTEGER,
-        muscle_group TEXT
+        muscle_group TEXT,
+        start_time TEXT,
+        end_time TEXT,
+        duration INTEGER
     )
     ''')
 
@@ -98,12 +102,12 @@ def user_exists(username):
     conn.close()
     return exists
 
-def save_workout(username, workout_name, exercise_name, sets_count, reps_count, muscle_group):
+def save_workout(username, workout_name, exercise_name, sets_count, reps_count, muscle_group, start_time=None, end_time=None, duration=None):
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO workouts (username, workout_name, exercise_name, sets_count, reps_count, muscle_group) VALUES (?, ?, ?, ?, ?, ?)",
-        (username, workout_name, exercise_name, sets_count, reps_count, muscle_group)
+        "INSERT INTO workouts (username, workout_name, exercise_name, sets_count, reps_count, muscle_group, start_time, end_time, duration) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        (username, workout_name, exercise_name, sets_count, reps_count, muscle_group, start_time, end_time, duration)
     )
     conn.commit()
     conn.close()
@@ -111,7 +115,7 @@ def save_workout(username, workout_name, exercise_name, sets_count, reps_count, 
 def get_user_workouts(username):
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
-    cursor.execute("SELECT workout_name, exercise_name, sets_count, reps_count, muscle_group FROM workouts WHERE username = ?", (username,))
+    cursor.execute("SELECT workout_name, exercise_name, sets_count, reps_count, muscle_group, start_time, end_time, duration FROM workouts WHERE username = ?", (username,))
     workouts = cursor.fetchall()
     conn.close()
     return workouts

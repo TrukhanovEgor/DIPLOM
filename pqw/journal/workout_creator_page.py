@@ -1,16 +1,60 @@
 import flet as ft
 from database import save_workout
+from datetime import datetime
+import threading
+import time
 
 def workout_creator_page(page, content_area, username, on_workout_saved=None):
     exercises = []
     workout_name_field = ft.TextField(label="Название тренировки")
-
     muscle_groups = [
         "Грудные мышцы", "Бицепс", "Трицепс", "Широчайшие",
         "Трапеция", "Дельты", "Пресс", "Ноги"
     ]
-
     exercises_list = ft.Column()
+
+    # Таймер переменные
+    timer_value = ft.Text("00:00:00", size=32, color=ft.colors.WHITE, text_align=ft.TextAlign.CENTER)
+    timer_seconds = [0]
+    timer_started_time = [None]
+    timer_ended_time = [None]
+    timer_is_running = [False]
+    timer_thread = [None]
+    stop_signal = [False]
+
+    def timer_worker():
+        while timer_is_running[0]:
+            time.sleep(1)
+            if not timer_is_running[0]:
+                break
+            timer_seconds[0] = int((datetime.now() - timer_started_time[0]).total_seconds())
+            h = timer_seconds[0] // 3600
+            m = (timer_seconds[0] % 3600) // 60
+            s = timer_seconds[0] % 60
+            timer_value.value = f"{h:02}:{m:02}:{s:02}"
+            page.update()
+
+    def start_timer(*_):
+        if not timer_is_running[0]:
+            timer_is_running[0] = True
+            timer_started_time[0] = datetime.now()
+            timer_thread[0] = threading.Thread(target=timer_worker, daemon=True)
+            timer_thread[0].start()
+            page.update()
+
+    def stop_timer(*_):
+        if timer_is_running[0]:
+            timer_is_running[0] = False
+            timer_ended_time[0] = datetime.now()
+            page.update()
+
+    def reset_timer(*_):
+        timer_is_running[0] = False
+        timer_seconds[0] = 0
+        timer_started_time[0] = None
+        timer_ended_time[0] = None
+        timer_value.value = "00:00:00"
+        page.update()
 
     def update_exercises_list():
         exercises_list.controls.clear()
@@ -84,6 +128,10 @@ def workout_creator_page(page, content_area, username, on_workout_saved=None):
             page.snack_bar.open = True
             page.update()
             return
+        stop_timer()
+        start_str = timer_started_time[0].strftime("%Y-%m-%d %H:%M:%S") if timer_started_time[0] else None
+        end_str = timer_ended_time[0].strftime("%Y-%m-%d %H:%M:%S") if timer_ended_time[0] else None
+        duration = timer_seconds[0]
         for ex in exercises:
             save_workout(
                 username=username,
@@ -92,8 +140,10 @@ def workout_creator_page(page, content_area, username, on_workout_saved=None):
                 sets_count=ex["sets_count"],
                 reps_count=ex["reps_count"],
                 muscle_group=ex["muscle_group"],
+                start_time=start_str,
+                end_time=end_str,
+                duration=duration
             )
-        # После сохранения возвращаемся в журнал
         from .journal import journal_page
         content_area.controls.clear()
         journal_page(page, content_area, username)
@@ -101,16 +151,38 @@ def workout_creator_page(page, content_area, username, on_workout_saved=None):
         if on_workout_saved:
             on_workout_saved()
 
+    def cancel_workout(e=None):
+        # Остановить таймер, очистить поля, перейти обратно в журнал
+        stop_timer()
+        from .journal import journal_page
+        content_area.controls.clear()
+        journal_page(page, content_area, username)
+        page.update()
+
     app_bar = ft.AppBar(
         title=ft.Text("Новая тренировка", size=20, color=ft.colors.WHITE),
         bgcolor=ft.colors.DEEP_ORANGE_300,
         actions=[
-            ft.TextButton("Сохранить", style=ft.ButtonStyle(color=ft.colors.WHITE), on_click=save_workout_and_exit)
+            ft.TextButton("Сохранить", style=ft.ButtonStyle(color=ft.colors.WHITE), on_click=save_workout_and_exit),
+            ft.TextButton("Отмена", style=ft.ButtonStyle(color=ft.colors.WHITE), on_click=cancel_workout)
         ]
     )
 
+    timer_buttons = ft.Row([
+        ft.ElevatedButton("Старт", on_click=start_timer),
+        ft.ElevatedButton("Сброс", on_click=reset_timer),
+    ], alignment=ft.MainAxisAlignment.CENTER)
+
     content = ft.Column([
         workout_name_field,
+        ft.Container(
+            ft.Column([
+                timer_value,
+                timer_buttons,
+            ], alignment=ft.MainAxisAlignment.CENTER),
+            alignment=ft.alignment.center,
+            padding=20,
+        ),
         exercises_list,
         ft.ElevatedButton(
             "Добавить упражнение",

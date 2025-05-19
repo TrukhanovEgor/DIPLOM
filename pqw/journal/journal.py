@@ -17,19 +17,27 @@ def journal_page(page, content_area, username):
         tile.subtitle.visible = not tile.subtitle.visible
         page.update()
 
-    # Группируем упражнения по названию тренировки
     def get_grouped_workouts():
         all_w = get_user_workouts(username)
         grouped = {}
         for w in all_w:
             workout_name = w[0]
-            exercise_info = w[1:]
+            exercise_info = w[1:]  # ex, sets, reps, muscle, start, end, duration
             grouped.setdefault(workout_name, []).append(exercise_info)
         return grouped
 
     def create_tile(workout_name, exercises):
+        # Берём время из первого упражнения
+        start_time, end_time, duration = exercises[0][4], exercises[0][5], exercises[0][6]
         subtitle_controls = []
-        for exercise_name, sets_count, reps_count, muscle_group in exercises:
+        if duration is not None:
+            h = int(duration) // 3600
+            m = (int(duration) % 3600) // 60
+            s = int(duration) % 60
+            subtitle_controls.append(
+                ft.Text(f"Время тренировки: {h:02}:{m:02}:{s:02}", color=ft.colors.AMBER_100)
+            )
+        for exercise_name, sets_count, reps_count, muscle_group, *_ in exercises:
             subtitle_controls.append(
                 ft.Text(f"{exercise_name} | {sets_count} x {reps_count} | {muscle_group}", color=ft.colors.WHITE)
             )
@@ -47,11 +55,10 @@ def journal_page(page, content_area, username):
         return tile
 
     def delete_whole_workout(workout_name):
-        # Удаляет все упражнения этой тренировки
         all_w = get_user_workouts(username)
         for w in all_w:
             if w[0] == workout_name:
-                delete_workout_from_db(username, *w)
+                delete_workout_from_db(username, *w[:5])
         refresh_workouts()
 
     def refresh_workouts():
