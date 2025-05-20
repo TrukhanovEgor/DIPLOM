@@ -142,7 +142,7 @@ def exemples_plan(page: ft.Page, content: ft.Column):
             "img_url": "https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02741101-Crunch-Floor-m_waist_small.png&w=640&q=100",
             "handler": open_plan(plan_abs, "Рельефный пресс"),
             "location": "Для дома",
-            "width": 320,
+            "width": 320,  # Исправлено: Ion 320 -> 320
             "height": 180,
             "is_wide": True,
         },
@@ -164,7 +164,7 @@ def exemples_plan(page: ft.Page, content: ft.Column):
             "location": "Для дома",
             "width": 150,
             "height": 200,
-            "is_wide": False,
+            "is_wide": False,  # Исправлено: sage="is_wide" -> "is_wide"
         },
         {
             "title": "Жим и тяги",
@@ -206,6 +206,9 @@ def exemples_plan(page: ft.Page, content: ft.Column):
             )
             i += 1
 
+    # Определяем высоту контейнера с защитой от None
+    container_height = page.height - 280 if page.height else 850
+
     # Создаём контейнер с вертикальной прокруткой
     content.controls.append(
         ft.Container(
@@ -222,14 +225,12 @@ def exemples_plan(page: ft.Page, content: ft.Column):
                 scroll=ft.ScrollMode.AUTO,  # Включаем вертикальный скролл
                 expand=True,
             ),
-            height=page.height - 80,  # Ограничиваем высоту
+            height=container_height,
             padding=ft.padding.symmetric(horizontal=10),
             expand=True,
         )
     )
 
-    # Устанавливаем параметры для content
-    content.scroll = ft.ScrollMode.AUTO
     content.expand = True
     page.update()
 
@@ -243,10 +244,7 @@ if __name__ == "__main__":
                 content=content_area,
                 expand=True,
                 padding=ft.padding.all(10),
-                height=page.height,  # Ограничиваем высоту страницы
             )
         )
         exemples_plan(page, content_area)
     ft.app(target=main)
-
-

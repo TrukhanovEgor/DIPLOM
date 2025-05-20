@@ -32,10 +32,11 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
         card_width = width * scale
         card_height = height * scale
 
-        content = []
+        # Контент для текста и иконки
+        text_content = []
         if icon:
-            content.append(ft.Icon(icon, color=ft.colors.DEEP_ORANGE_300, size=24 * scale))
-        content.extend([
+            text_content.append(ft.Icon(icon, color=ft.colors.DEEP_ORANGE_300, size=24 * scale))
+        text_content.extend([
             ft.Text(
                 title,
                 size=16 * scale,
@@ -52,38 +53,54 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
                 color=ft.colors.WHITE70,
                 text_align=ft.TextAlign.LEFT,
                 font_family="Arial",
+                width=card_width - 20 * scale,  # Ограничиваем ширину текста
             ),
         ])
 
+        # Создаём стек для наложения изображения и текста
+        stack_content = []
         if img_url:
-            content.insert(0, ft.Image(
-                src=img_url,
+            stack_content.append(
+                ft.Image(
+                    src=img_url,
+                    width=card_width,
+                    height=card_height,
+                    fit=ft.ImageFit.COVER,
+                    border_radius=12,
+                    opacity=0.6,
+                    error_content=ft.Text("Ошибка изображения", color=ft.colors.RED_400, size=12),
+                )
+            )
+        stack_content.append(
+            ft.Container(
+                gradient=ft.LinearGradient(
+                    colors=["#B3000000", ft.colors.TRANSPARENT],
+                    begin=ft.alignment.bottom_center,
+                    end=ft.alignment.top_center,
+                ),
                 width=card_width,
-                height=card_height * 0.5,
-                fit=ft.ImageFit.COVER,
+                height=card_height,
                 border_radius=12,
-                opacity=0.6,
-                error_content=ft.Text("Ошибка изображения", color=ft.colors.RED_400, size=12),
-            ))
-
-        return ft.Container(
-            content=ft.Column(
-                content,
+            )
+        )
+        stack_content.append(
+            ft.Column(
+                text_content,
                 alignment=ft.MainAxisAlignment.CENTER,
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 spacing=8 * scale,
-            ),
+                expand=True,
+            )
+        )
+
+        return ft.Container(
+            content=ft.Stack(stack_content),
             padding=10 * scale,
             width=card_width,
             height=card_height,
             margin=ft.margin.all(8 * scale),
             border_radius=12,
             bgcolor=ft.colors.GREY_900,
-            gradient=ft.LinearGradient(
-                colors=["#B3000000", ft.colors.TRANSPARENT],
-                begin=ft.alignment.bottom_center,
-                end=ft.alignment.top_center,
-            ),
             shadow=[
                 ft.BoxShadow(
                     color="#66000000",
@@ -96,7 +113,6 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
 
     # Контент плана тренировок
     cards = [
-        # Введение
         create_card(
             title="Введение",
             description="Этот 8-недельный план для домашних тренировок поможет развить силу и выносливость.\n"
@@ -109,7 +125,6 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
             width=320,
             height=260,
         ),
-        # Расписание
         create_card(
             title="Расписание",
             description="Тренировки 3 раза в неделю:\n"
@@ -124,7 +139,6 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
             width=320,
             height=240,
         ),
-        # Разминка
         create_card(
             title="Разминка (5–7 минут)",
             description="Подготовьте тело:\n"
@@ -137,7 +151,6 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
             width=320,
             height=240,
         ),
-        # День 1: Грудь + Трицепс
         create_card(
             title="День 1: Отжимания",
             description="Подходы: 3 по 10–15 повторений. Отдых: 45–60 сек.\n"
@@ -204,7 +217,6 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
             width=320,
             height=240,
         ),
-        # День 2: Спина + Бицепс
         create_card(
             title="День 2: Тяга бутылок в наклоне",
             description="Подходы: 3 по 12–15 повторений. Отдых: 45–60 сек.\n"
@@ -271,7 +283,6 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
             width=320,
             height=240,
         ),
-        # День 3: Ноги + Плечи
         create_card(
             title="День 3: Приседания с весом тела",
             description="Подходы: 3 по 15–20 повторений. Отдых: 45–60 сек.\n"
@@ -338,7 +349,6 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
             width=320,
             height=240,
         ),
-        # Заминка
         create_card(
             title="Заминка (5 минут)",
             description="Расслабьтесь и восстановитесь:\n"
@@ -351,7 +361,6 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
             width=320,
             height=260,
         ),
-        # Питание
         create_card(
             title="Питание",
             description="Для прогресса:\n"
@@ -365,7 +374,6 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
             width=320,
             height=280,
         ),
-        # Восстановление
         create_card(
             title="Восстановление",
             description="Для прогресса:\n"
@@ -378,7 +386,6 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
             width=320,
             height=240,
         ),
-        # Советы для дома
         create_card(
             title="Советы для дома",
             description="Организуйте тренировки:\n"
@@ -391,7 +398,6 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
             width=320,
             height=240,
         ),
-        # Мотивация
         create_card(
             title="Мотивация и прогресс",
             description="Двигайтесь к цели:\n"
@@ -406,42 +412,56 @@ def plan_gym(page: ft.Page, content_area: ft.Column, go_back):
         ),
     ]
 
-    # Создаем контейнер с вертикальной прокруткой
+    # Определяем высоту контейнера с защитой от None
+    container_height = page.height - 280 if page.height else 850
+
+    # Создаём контейнер с вертикальной прокруткой
     content_area.controls.append(
-        ft.Column(
-            [
-                ft.Container(
-                    content=ft.Row(
-                        [back_button, title_text],
-                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        ft.Container(
+            content=ft.Column(
+                controls=[
+                    ft.Container(
+                        content=ft.Row(
+                            [back_button, title_text],
+                            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                        ),
+                        padding=ft.padding.symmetric(horizontal=10, vertical=10),
+                        bgcolor=ft.colors.GREY_800,
+                        border_radius=8,
                     ),
-                    padding=ft.padding.symmetric(horizontal=10, vertical=10),
-                    bgcolor=ft.colors.GREY_800,
-                    border_radius=8,
-                ),
-                ft.ListView(
-                    controls=[ft.Row([card], alignment=ft.MainAxisAlignment.CENTER) for card in cards],
-                    spacing=10,
-                    padding=ft.padding.symmetric(vertical=10, horizontal=10),
-                    expand=True,
-                    auto_scroll=True,
-                ),
-            ],
-            alignment=ft.MainAxisAlignment.START,
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    ft.Column(
+                        controls=[ft.Row([card], alignment=ft.MainAxisAlignment.CENTER) for card in cards],
+                        spacing=10,
+                        scroll=ft.ScrollMode.AUTO,  # Включаем вертикальный скролл
+                        expand=True,
+                    ),
+                ],
+                spacing=10,
+                alignment=ft.MainAxisAlignment.START,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                expand=True,
+            ),
+            height=container_height,
+            padding=ft.padding.symmetric(horizontal=10),
             expand=True,
         )
     )
 
-    content_area.scroll = ft.ScrollMode.AUTO
+    content_area.expand = True
     page.update()
 
 if __name__ == "__main__":
     def main(page: ft.Page):
         page.title = "План: Домашний спортзал"
         page.bgcolor = ft.colors.BLACK
-        content_area = ft.Column()
+        content_area = ft.Column(expand=True)
+        page.add(
+            ft.Container(
+                content=content_area,
+                expand=True,
+                padding=ft.padding.all(10),
+            )
+        )
         plan_gym(page, content_area, lambda e: None)  # Заглушка для go_back
-        page.add(content_area)
     ft.app(target=main)
