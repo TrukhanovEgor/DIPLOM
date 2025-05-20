@@ -9,7 +9,6 @@ from Plan.plan_abs import plan_abs
 def exemples_plan(page: ft.Page, content: ft.Column):
     content.controls.clear()
 
-    
     title_text = ft.Text(
         "Выберите ваш план",
         size=22,
@@ -24,16 +23,12 @@ def exemples_plan(page: ft.Page, content: ft.Column):
             content.controls.clear()
             page.snack_bar = ft.SnackBar(ft.Text(f"Открытие плана: {plan_name}"))
             page.snack_bar.open = True
-
             def go_back(e):
                 exemples_plan(page, content)
-
             plan_func(page, content, go_back)
             page.update()
         return handler
 
-
-    # создания карточки плана
     def create_plan_card(img_url, title, description, handler, location, width=150, height=200, is_wide=False):
         return ft.Container(
             content=ft.Stack(
@@ -49,7 +44,7 @@ def exemples_plan(page: ft.Page, content: ft.Column):
                     ),
                     ft.Container(
                         gradient=ft.LinearGradient(
-                            colors=["#B3000000", ft.colors.TRANSPARENT],  # Чёрный розрачностью 70%
+                            colors=["#B3000000", ft.colors.TRANSPARENT],
                             begin=ft.alignment.bottom_center,
                             end=ft.alignment.top_center,
                         ),
@@ -112,7 +107,7 @@ def exemples_plan(page: ft.Page, content: ft.Column):
             bgcolor=ft.colors.GREY_900,
             shadow=[
                 ft.BoxShadow(
-                    color="#66000000",  # Чёрный с прозрачностью 40%
+                    color="#66000000",
                     blur_radius=8,
                     offset=ft.Offset(0, 4),
                     spread_radius=1,
@@ -120,7 +115,6 @@ def exemples_plan(page: ft.Page, content: ft.Column):
             ],
         )
 
-    # Список планов с категориями для дома и спортзала
     plans = [
         {
             "title": "Убрать живот",
@@ -184,98 +178,75 @@ def exemples_plan(page: ft.Page, content: ft.Column):
         },
     ]
 
-    # Разбиваем карточки на строки с горизонтальной прокруткой
+    # Создаём строки для карточек без горизонтальной прокрутки
     rows = []
     i = 0
     while i < len(plans):
-        if i % 3 == 0 and i + 1 < len(plans):  # Две карточки в строке
+        if not plans[i]["is_wide"] and i + 1 < len(plans) and not plans[i + 1]["is_wide"]:
             rows.append(
-                ft.Container(
-                    content=ft.Row(
-                        controls=[
-                            create_plan_card(
-                                plans[i]["img_url"],
-                                plans[i]["title"],
-                                plans[i]["description"],
-                                plans[i]["handler"],
-                                plans[i]["location"],
-                                plans[i]["width"],
-                                plans[i]["height"],
-                                plans[i]["is_wide"],
-                            ),
-                            create_plan_card(
-                                plans[i + 1]["img_url"],
-                                plans[i + 1]["title"],
-                                plans[i + 1]["description"],
-                                plans[i + 1]["handler"],
-                                plans[i + 1]["location"],
-                                plans[i + 1]["width"],
-                                plans[i + 1]["height"],
-                                plans[i + 1]["is_wide"],
-                            ),
-                        ],
-                        spacing=10,
-                        alignment=ft.MainAxisAlignment.START,
-                        scroll=ft.ScrollMode.AUTO,  # Горизонтальная прокрутка
-                    ),
-                    padding=ft.padding.symmetric(horizontal=10),
+                ft.Row(
+                    controls=[
+                        create_plan_card(**plans[i]),
+                        create_plan_card(**plans[i + 1]),
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    spacing=10,
                 )
             )
             i += 2
-        else:  # Одна карточка на всю строку
+        else:
             rows.append(
-                ft.Container(
-                    content=ft.Row(
-                        controls=[
-                            create_plan_card(
-                                plans[i]["img_url"],
-                                plans[i]["title"],
-                                plans[i]["description"],
-                                plans[i]["handler"],
-                                plans[i]["location"],
-                                plans[i]["width"],
-                                plans[i]["height"],
-                                plans[i]["is_wide"],
-                            ),
-                        ],
-                        spacing=10,
-                        alignment=ft.MainAxisAlignment.START,
-                        scroll=ft.ScrollMode.AUTO,  # Горизонтальная прокрутка
-                    ),
-                    padding=ft.padding.symmetric(horizontal=10),
+                ft.Row(
+                    controls=[
+                        create_plan_card(**plans[i]),
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    spacing=10,
                 )
             )
             i += 1
 
-    # Создаем контейнер с вертикальной прокруткой
+    # Создаём контейнер с вертикальной прокруткой
     content.controls.append(
-        ft.Column(
-            [
-                ft.Container(
-                    content=title_text,
-                    alignment=ft.alignment.center,
-                    padding=ft.padding.only(top=15, bottom=10),
-                ),
-                ft.Column(
-                    controls=rows,
-                    spacing=10,
-                    expand=True,
-                ),
-            ],
-            alignment=ft.MainAxisAlignment.START,
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        ft.Container(
+            content=ft.Column(
+                controls=[
+                    ft.Container(
+                        content=title_text,
+                        alignment=ft.alignment.center,
+                        padding=ft.padding.only(top=15, bottom=10),
+                    ),
+                    *rows,
+                ],
+                spacing=10,
+                scroll=ft.ScrollMode.AUTO,  # Включаем вертикальный скролл
+                expand=True,
+            ),
+            height=page.height - 80,  # Ограничиваем высоту
+            padding=ft.padding.symmetric(horizontal=10),
             expand=True,
         )
     )
 
-    content.scroll = ft.ScrollMode.AUTO  # Вертикальная прокрутка для всего контента
+    # Устанавливаем параметры для content
+    content.scroll = ft.ScrollMode.AUTO
+    content.expand = True
     page.update()
 
 if __name__ == "__main__":
     def main(page: ft.Page):
         page.title = "Тренировочные планы"
         page.bgcolor = ft.colors.BLACK
-        content_area = ft.Column()
+        content_area = ft.Column(expand=True)
+        page.add(
+            ft.Container(
+                content=content_area,
+                expand=True,
+                padding=ft.padding.all(10),
+                height=page.height,  # Ограничиваем высоту страницы
+            )
+        )
         exemples_plan(page, content_area)
-        page.add(content_area)
     ft.app(target=main)
+
+
