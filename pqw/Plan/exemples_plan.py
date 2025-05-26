@@ -6,7 +6,7 @@ from Plan.plan_push_pull import plan_push_pull
 from Plan.plan_body_shape import plan_body_shape
 from Plan.plan_abs import plan_abs
 
-def exemples_plan(page: ft.Page, content: ft.Column):
+def exemples_plan(page: ft.Page, content: ft.Column, username, go_to_journal):
     content.controls.clear()
 
     title_text = ft.Text(
@@ -24,8 +24,8 @@ def exemples_plan(page: ft.Page, content: ft.Column):
             page.snack_bar = ft.SnackBar(ft.Text(f"Открытие плана: {plan_name}"))
             page.snack_bar.open = True
             def go_back(e):
-                exemples_plan(page, content)
-            plan_func(page, content, go_back)
+                exemples_plan(page, content, username, go_to_journal)
+            plan_func(page, content, go_back, username, go_to_journal)
             page.update()
         return handler
 
@@ -142,7 +142,7 @@ def exemples_plan(page: ft.Page, content: ft.Column):
             "img_url": "https://my.lyfta.app/_next/image?url=https%3A%2F%2Fapilyfta.com%2Fstatic%2FGymvisualPNG%2F02741101-Crunch-Floor-m_waist_small.png&w=640&q=100",
             "handler": open_plan(plan_abs, "Рельефный пресс"),
             "location": "Для дома",
-            "width": 320,  # Исправлено: Ion 320 -> 320
+            "width": 320,
             "height": 180,
             "is_wide": True,
         },
@@ -164,7 +164,7 @@ def exemples_plan(page: ft.Page, content: ft.Column):
             "location": "Для дома",
             "width": 150,
             "height": 200,
-            "is_wide": False,  # Исправлено: sage="is_wide" -> "is_wide"
+            "is_wide": False,
         },
         {
             "title": "Жим и тяги",
@@ -222,7 +222,7 @@ def exemples_plan(page: ft.Page, content: ft.Column):
                     *rows,
                 ],
                 spacing=10,
-                scroll=ft.ScrollMode.AUTO,  # Включаем вертикальный скролл
+                scroll=ft.ScrollMode.AUTO,
                 expand=True,
             ),
             height=container_height,
@@ -233,18 +233,3 @@ def exemples_plan(page: ft.Page, content: ft.Column):
 
     content.expand = True
     page.update()
-
-if __name__ == "__main__":
-    def main(page: ft.Page):
-        page.title = "Тренировочные планы"
-        page.bgcolor = ft.colors.BLACK
-        content_area = ft.Column(expand=True)
-        page.add(
-            ft.Container(
-                content=content_area,
-                expand=True,
-                padding=ft.padding.all(10),
-            )
-        )
-        exemples_plan(page, content_area)
-    ft.app(target=main)

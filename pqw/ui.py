@@ -15,14 +15,16 @@ def create_app_bar():
         bgcolor=ft.colors.DEEP_ORANGE_300,
     )
 
-def create_panel_plans(content_area, selected_plan):
+def create_panel_plans(content_area, selected_plan, username, go_to_journal):
     return ft.Column(
         [
             ft.Container(
                 content=ft.CupertinoSlidingSegmentedButton(
                     selected_index=0,
                     thumb_color=ft.colors.DEEP_ORANGE_300,
-                    on_change=lambda e: show_page(e.control.selected_index, content_area, e, content_area.page),
+                    on_change=lambda e: show_page(
+                        e.control.selected_index, content_area, e, content_area.page, username, go_to_journal
+                    ),
                     padding=ft.padding.symmetric(0, 10),
                     controls=[
                         ft.Text("Тренировки", size=20, weight=ft.FontWeight.BOLD),
@@ -36,20 +38,20 @@ def create_panel_plans(content_area, selected_plan):
         ]
     )
 
-def show_page(selected_index, content_area, e, page):
+def show_page(selected_index, content_area, e, page, username, go_to_journal):
     content_area.controls.clear()
 
     if selected_index == 0:
-        show_examples_plan(page, content_area)
+        show_examples_plan(page, content_area, username, go_to_journal)
     elif selected_index == 1:
-        show_personal_content(page, content_area)
+        show_personal_content(page, content_area, username, go_to_journal)
 
     content_area.update()
 
-def show_examples_plan(page, content_area):
-    exemples_plan(page, content_area)
+def show_examples_plan(page, content_area, username, go_to_journal):
+    exemples_plan(page, content_area, username, go_to_journal)
 
-def show_personal_content(page, content_area):
+def show_personal_content(page, content_area, username, go_to_journal):
     personal_content = ft.Column(
         [
             ft.Row(
@@ -65,7 +67,7 @@ def show_personal_content(page, content_area):
                         icon_color="DEEP_ORANGE_300",
                         icon_size=40,
                         tooltip="Добавить",
-                        on_click=lambda e:(content_area),
+                        on_click=lambda e: create_new_training(content_area, username, go_to_journal),
                     ),
                 ],
                 alignment=ft.MainAxisAlignment.END,
@@ -78,7 +80,7 @@ def show_personal_content(page, content_area):
         personal_content.controls.append(
             ft.TextButton(
                 text=training_name,
-                on_click=lambda e: show_page(0, content_area, e, page),
+                on_click=lambda e: show_page(0, content_area, e, page, username, go_to_journal),
                 style=ft.ButtonStyle(
                     color=ft.colors.DEEP_ORANGE_300,
                     shape=ft.RoundedRectangleBorder(radius=10),
@@ -93,7 +95,7 @@ def show_personal_content(page, content_area):
 
     content_area.controls.append(personal_content)
 
-def create_new_training(content_area):
+def create_new_training(content_area, username, go_to_journal):
     content_area.controls.clear()
 
     name_training = ft.TextField(
@@ -126,7 +128,7 @@ def create_new_training(content_area):
                         [
                             ft.ElevatedButton(
                                 text="Сохранить",
-                                on_click=lambda e: save_training(content_area, name_training, days_count),
+                                on_click=lambda e: save_training(content_area, name_training, days_count, username, go_to_journal),
                                 style=ft.ButtonStyle(
                                     shape=ft.RoundedRectangleBorder(radius=30),
                                     bgcolor=ft.colors.DEEP_ORANGE_300,
@@ -136,7 +138,7 @@ def create_new_training(content_area):
                             ),
                             ft.ElevatedButton(
                                 text="Отменить",
-                                on_click=lambda e: cancel_training(content_area),
+                                on_click=lambda e: cancel_training(content_area, username, go_to_journal),
                                 style=ft.ButtonStyle(
                                     shape=ft.RoundedRectangleBorder(radius=30),
                                     bgcolor=ft.colors.DEEP_ORANGE_300,
@@ -157,7 +159,7 @@ def create_new_training(content_area):
 
     content_area.update()
 
-def save_training(content_area, name_training, days_count):
+def save_training(content_area, name_training, days_count, username, go_to_journal):
     training_name = name_training.value
     days = days_count.value
 
@@ -166,7 +168,7 @@ def save_training(content_area, name_training, days_count):
         print(f"Тренировка сохранена! Название: {training_name}, Количество дней: {days}")
 
         content_area.controls.clear()
-        show_page(1, content_area, None, None)
+        show_page(1, content_area, None, None, username, go_to_journal)
     else:
         content_area.controls.append(
             ft.Text("Пожалуйста, заполните все поля.", size=16, color=ft.colors.RED)
@@ -174,6 +176,6 @@ def save_training(content_area, name_training, days_count):
 
     content_area.update()
 
-def cancel_training(content_area):
+def cancel_training(content_area, username, go_to_journal):
     content_area.controls.clear()
-    show_page(1, content_area, None, None)
+    show_page(1, content_area, None, None, username, go_to_journal)

@@ -1,8 +1,9 @@
 import flet as ft
 from database import delete_workout_from_db, get_user_workouts
 from .workout_creator_page import workout_creator_page
+from .Plan_journal_abs import plan_journal_abs
 
-def journal_page(page, content_area, username):
+def journal_page(page, content_area, username, go_to_plan):
     if page is None:
         return
 
@@ -13,6 +14,8 @@ def journal_page(page, content_area, username):
         bgcolor=ft.colors.DEEP_ORANGE_300,
     )
 
+    show_plan_button = {"value": True}
+
     def toggle_visibility(tile):
         tile.subtitle.visible = not tile.subtitle.visible
         page.update()
@@ -22,12 +25,60 @@ def journal_page(page, content_area, username):
         grouped = {}
         for w in all_w:
             workout_name = w[0]
-            exercise_info = w[1:]  # ex, sets, reps, muscle, start, end, duration
+            exercise_info = w[1:]
             grouped.setdefault(workout_name, []).append(exercise_info)
         return grouped
 
+    def remove_plan_button(e=None):
+        show_plan_button["value"] = False
+        refresh_workouts()
+
     def create_tile(workout_name, exercises):
-        # Берём время из первого упражнения
+        if workout_name == "Убрать живот" and show_plan_button["value"]:
+            tile = ft.Row(
+                [
+                    ft.ElevatedButton(
+                        content=ft.Row(
+                            [
+                                ft.Icon(ft.icons.FITNESS_CENTER, size=24, color=ft.colors.WHITE),
+                                ft.Text("План: Убрать живот", size=18, weight=ft.FontWeight.BOLD),
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            spacing=10,
+                        ),
+                        on_click=lambda e: plan_journal_abs(page, content_area),
+
+                        style=ft.ButtonStyle(
+                            bgcolor=ft.colors.ORANGE_400,
+                            color=ft.colors.WHITE,
+                            shape=ft.RoundedRectangleBorder(radius=20),
+                            padding=ft.padding.symmetric(horizontal=20, vertical=16),
+                            shadow_color=ft.colors.ORANGE_800,
+                            elevation=8,
+                            overlay_color=ft.colors.ORANGE_200
+                        ),
+                    ),
+                    ft.IconButton(
+                        icon=ft.icons.DELETE,
+                        icon_color=ft.colors.RED,
+                        tooltip="Удалить план",
+                        on_click=remove_plan_button,
+                        style=ft.ButtonStyle(
+                            shape=ft.RoundedRectangleBorder(radius=12),
+                            padding=ft.padding.all(10),
+                            bgcolor=ft.colors.RED_100,
+                            overlay_color=ft.colors.RED_200,
+                        ),
+                    )
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+                spacing=10
+            )
+            return tile
+        elif workout_name == "Убрать живот" and not show_plan_button["value"]:
+            return None
+
+        # Обычные тренировки
         start_time, end_time, duration = exercises[0][4], exercises[0][5], exercises[0][6]
         subtitle_controls = []
         if duration is not None:
@@ -66,7 +117,8 @@ def journal_page(page, content_area, username):
         grouped = get_grouped_workouts()
         for workout_name, exercises in grouped.items():
             tile = create_tile(workout_name, exercises)
-            workouts_list.controls.append(tile)
+            if tile is not None:
+                workouts_list.controls.append(tile)
         page.update()
 
     workouts_list = ft.ListView(controls=[], width=None, height=500, spacing=10)
@@ -84,9 +136,10 @@ def journal_page(page, content_area, username):
         grouped = get_grouped_workouts()
         selected_filter = filter_dropdown.value
         for workout_name, exercises in grouped.items():
-            if selected_filter == "Все" or any(ex[3] == selected_filter for ex in exercises):
-                tile = create_tile(workout_name, exercises)
-                workouts_list.controls.append(tile)
+            tile = create_tile(workout_name, exercises)
+            if tile is not None:
+                if selected_filter == "Все" or any(ex[3] == selected_filter for ex in exercises):
+                    workouts_list.controls.append(tile)
         page.update()
 
     def go_to_create_workout(_):
@@ -106,11 +159,7 @@ def journal_page(page, content_area, username):
     )
 
     content = ft.Column(
-        controls=[
-            ft.Row([filter_dropdown], alignment=ft.MainAxisAlignment.CENTER),
-            start_workout_button,
-            workouts_list,
-        ],
+        controls=[],
         spacing=20,
         alignment=ft.MainAxisAlignment.CENTER,
     )
@@ -121,8 +170,18 @@ def journal_page(page, content_area, username):
         expand=True,
     )
 
-    refresh_workouts()
-
     page.add(app_bar)
     content_area.controls.append(scrollable_content)
     page.update()
+
+    def rebuild_content():
+        content.controls.clear()
+        content.controls.append(
+            ft.Row([filter_dropdown], alignment=ft.MainAxisAlignment.CENTER)
+        )
+        content.controls.append(start_workout_button)
+        content.controls.append(workouts_list)
+        content.update()
+
+    refresh_workouts()
+    rebuild_content()

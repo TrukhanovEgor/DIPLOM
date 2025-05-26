@@ -18,7 +18,7 @@ def main(page: ft.Page):
     page.window.resizable = True
 
     def logout():
-        page.session.clear()  # очищаем сохранённое имя пользователя
+        page.session.clear()
         page.clean()
         page.navigation_bar = None
         page.add(auth_page(page, on_login_success))
@@ -33,10 +33,23 @@ def main(page: ft.Page):
         panel_exemples = create_panel_exempless(page)
         selected_plan = ft.Text(size=24, weight=ft.FontWeight.BOLD)
         content_area = ft.Column(expand=True)
-        panel_plans = create_panel_plans(content_area, selected_plan)
-        panel_progress = progress_page (page)
 
-        # Профиль
+        # Сначала определяем go_to_plan и go_to_journal
+        def go_to_plan(e=None):
+            page.clean()
+            page.add(app_bar)
+            page.add(panel_plans)
+            show_page(0, content_area, e, page, username, go_to_journal)
+
+        def go_to_journal(e=None):
+            journal_content = ft.Column()
+            page.clean()
+            page.add(app_bar)
+            page.add(journal_content)  # <--- ДО journal_page!
+            journal_page(page, journal_content, username, go_to_plan)
+
+        panel_plans = create_panel_plans(content_area, selected_plan, username, go_to_journal)
+        panel_progress = progress_page(page)
         panel_profile = profile_page(page, logout_callback=logout, username=username)
 
         def navigate(e):
@@ -50,20 +63,18 @@ def main(page: ft.Page):
             elif index == 1:
                 app_bar.title = ft.Text("Планы", size=20)
                 page.add(panel_plans)
-                show_page(0, content_area, e, page)
+                show_page(0, content_area, e, page, username, go_to_journal)
             elif index == 2:
                 app_bar.title = ft.Text("Журнал тренировок", size=20)
                 journal_content = ft.Column()
-                journal_page(page, journal_content, username)
-                page.add(journal_content)
+                page.add(journal_content)  # СНАЧАЛА добавить!
+                journal_page(page, journal_content, username, go_to_plan)
             elif index == 3:
                 app_bar.title = ft.Text("Прогресс", size=20)
                 page.add(panel_progress)
             elif index == 4:
                 app_bar.title = ft.Text("Профиль", size=20)
                 page.add(panel_profile)
-            
-
             page.update()
 
         page.navigation_bar = ft.NavigationBar(
@@ -72,7 +83,7 @@ def main(page: ft.Page):
                 ft.NavigationBarDestination(icon=ft.Icons.EVENT, label="Планы"),
                 ft.NavigationBarDestination(icon=ft.Icons.SCHEDULE, label="Журнал"),
                 ft.NavigationBarDestination(icon=ft.Icons.TIMELINE, label="Прогресс"),
-                ft.NavigationBarDestination(icon=ft.Icons.PERSON, label="Профиль"), 
+                ft.NavigationBarDestination(icon=ft.Icons.PERSON, label="Профиль"),
             ],
             on_change=navigate,
             bgcolor=ft.Colors.DEEP_ORANGE_300,

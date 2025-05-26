@@ -5,6 +5,7 @@ import threading
 import time
 
 def workout_creator_page(page, content_area, username, on_workout_saved=None):
+  
     exercises = []
     workout_name_field = ft.TextField(label="Название тренировки")
     muscle_groups = [
@@ -167,6 +168,34 @@ def workout_creator_page(page, content_area, username, on_workout_saved=None):
             ft.TextButton("Отмена", style=ft.ButtonStyle(color=ft.colors.WHITE), on_click=cancel_workout)
         ]
     )
+
+    def cancel_workout(e=None):
+        confirm_dialog = ft.AlertDialog(
+            title=ft.Text("Отмена тренировки"),
+            content=ft.Text("Вы уверены, что хотите отменить тренировку? Введённые данные будут утеряны."),
+            actions=[
+                ft.TextButton("Да", on_click=lambda e: do_cancel()),
+                ft.TextButton("Нет", on_click=lambda e: close_dialog())
+            ]
+        )
+
+        def do_cancel():
+            stop_timer()
+            from .journal import journal_page
+            content_area.controls.clear()
+            journal_page(page, content_area, username)
+            confirm_dialog.open = False
+            page.update()
+
+        def close_dialog():
+            confirm_dialog.open = False
+            page.update()
+
+        if confirm_dialog not in page.overlay:
+            page.overlay.append(confirm_dialog)
+        confirm_dialog.open = True
+        page.update()
+
 
     timer_buttons = ft.Row([
         ft.ElevatedButton("Старт", on_click=start_timer),
