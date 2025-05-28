@@ -1,9 +1,10 @@
 import flet as ft
+from database import save_workout
 
-def plan_fitness_club(page: ft.Page, content_area: ft.Column, go_back):
+def plan_fitness_club(page: ft.Page, content_area: ft.Column, go_back, username=None, go_to_journal=None):
     content_area.controls.clear()
 
-    # Статический заголовок
+    # Заголовок
     title_text = ft.Text(
         "План: Фитнес-клуб",
         size=20,
@@ -25,14 +26,51 @@ def plan_fitness_club(page: ft.Page, content_area: ft.Column, go_back):
         ),
     )
 
-    # Функция для создания карточки
+    # Кнопка "Начать План"
+    def on_start_click(e):
+        save_workout(
+            username=username,
+            workout_name="Фитнес-клуб",
+            exercise_name="План: Фитнес-клуб",
+            sets_count="-",
+            reps_count="-",
+            muscle_group="План",
+            start_time=None,
+            end_time=None,
+            duration=None,
+        )
+        page.snack_bar = ft.SnackBar(ft.Text("План 'Фитнес-клуб' добавлен в журнал"))
+        page.snack_bar.open = True
+        page.update()
+        if go_to_journal:
+            go_to_journal(e)
+
+    start_button = ft.ElevatedButton(
+        text="Начать План",
+        on_click=on_start_click,
+        style=ft.ButtonStyle(
+            bgcolor=ft.colors.GREEN_400,
+            color=ft.colors.WHITE,
+            shape=ft.RoundedRectangleBorder(radius=8),
+            padding=ft.padding.symmetric(horizontal=20, vertical=10),
+        ),
+    )
+
+    # Объединяем кнопки "Назад" и "Начать План" в одну строку (Row)
+    buttons_row = ft.Row(
+        controls=[back_button, start_button],
+        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        expand=True,
+    )
+
+    # Далее ваш код создания карточек и контейнеров (сохранил из вашего примера)
     def create_card(title, description, img_url=None, icon=None, width=320, height=180):
         screen_width = page.window.width if page.window.width > 0 else 350
-        scale = min(1.0, screen_width / 400)  # Масштабируем для узких экранов
+        scale = min(1.0, screen_width / 400)
         card_width = width * scale
         card_height = height * scale
 
-        # Контент для текста и иконки
         text_content = []
         if icon:
             text_content.append(ft.Icon(icon, color=ft.colors.DEEP_ORANGE_300, size=24 * scale))
@@ -53,11 +91,10 @@ def plan_fitness_club(page: ft.Page, content_area: ft.Column, go_back):
                 color=ft.colors.WHITE70,
                 text_align=ft.TextAlign.LEFT,
                 font_family="Arial",
-                width=card_width - 20 * scale,  # Ограничиваем ширину текста
+                width=card_width - 20 * scale,
             ),
         ])
 
-        # Создаём стек для наложения изображения и текста
         stack_content = []
         if img_url:
             stack_content.append(
@@ -111,7 +148,7 @@ def plan_fitness_club(page: ft.Page, content_area: ft.Column, go_back):
             ],
         )
 
-    # Контент плана тренировок
+    # Пример карточек, замените на ваши
     cards = [
         create_card(
             title="Введение",
@@ -400,19 +437,22 @@ def plan_fitness_club(page: ft.Page, content_area: ft.Column, go_back):
         ),
     ]
 
-    # Определяем высоту контейнера с защитой от None
+
     container_height = page.height - 280 if page.height else 850
 
-    # Создаём контейнер с вертикальной прокруткой
     content_area.controls.append(
         ft.Container(
             content=ft.Column(
                 controls=[
                     ft.Container(
-                        content=ft.Row(
-                            [back_button, title_text],
-                            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                        content=ft.Column(
+                            controls=[
+                                buttons_row,
+                                title_text
+                            ],
+                            spacing=10,
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                         ),
                         padding=ft.padding.symmetric(horizontal=10, vertical=10),
                         bgcolor=ft.colors.GREY_800,
@@ -421,7 +461,7 @@ def plan_fitness_club(page: ft.Page, content_area: ft.Column, go_back):
                     ft.Column(
                         controls=[ft.Row([card], alignment=ft.MainAxisAlignment.CENTER) for card in cards],
                         spacing=10,
-                        scroll=ft.ScrollMode.AUTO,  # Включаем вертикальный скролл
+                        scroll=ft.ScrollMode.AUTO,
                         expand=True,
                     ),
                 ],
@@ -438,18 +478,3 @@ def plan_fitness_club(page: ft.Page, content_area: ft.Column, go_back):
 
     content_area.expand = True
     page.update()
-
-if __name__ == "__main__":
-    def main(page: ft.Page):
-        page.title = "План: Фитнес-клуб"
-        page.bgcolor = ft.colors.BLACK
-        content_area = ft.Column(expand=True)
-        page.add(
-            ft.Container(
-                content=content_area,
-                expand=True,
-                padding=ft.padding.all(10),
-            )
-        )
-        plan_fitness_club(page, content_area, lambda e: None)  # Заглушка для go_back
-    ft.app(target=main)

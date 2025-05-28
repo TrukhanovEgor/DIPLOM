@@ -1,7 +1,7 @@
 import flet as ft
 from database import save_workout
 
-def plan_abs(page: ft.Page, content_area: ft.Column, go_back, username, go_to_journal):
+def plan_abs(page: ft.Page, content_area: ft.Column, go_back, username=None, go_to_journal=None):
     content_area.controls.clear()
 
     # Статический заголовок
@@ -139,16 +139,48 @@ def plan_abs(page: ft.Page, content_area: ft.Column, go_back, username, go_to_jo
 
     # Контент плана тренировок (оставьте как у вас)
     cards = [
-        # ... (ваш массив карточек, как в вашем примере)
-        create_card(
-            title="Введение",
-            description="Этот 8-недельный план поможет убрать жир ...",
-            icon=ft.icons.INFO_OUTLINE,
-            width=300,
-            height=200,
-        ),
-        # ... остальные карточки ...
-    ]
+    create_card(
+        title="Неделя 1: Разгон метаболизма",
+        description="• Планка – 3 подхода по 30 сек\n• Скручивания – 3x15\n• Прыжки на месте – 3x45 сек",
+        icon=ft.icons.FITNESS_CENTER
+    ),
+    create_card(
+        title="Неделя 2: Сжигание калорий",
+        description="• Бёрпи – 3x10\n• Подъём ног лёжа – 3x15\n• Боковая планка – 2x30 сек на сторону",
+        icon=ft.icons.LOCAL_FIRE_DEPARTMENT
+    ),
+    create_card(
+        title="Неделя 3: Укрепление пресса",
+        description="• Велосипед – 3x20\n• Альпинист – 3x30 сек\n• Скручивания с поворотом – 3x15",
+        icon=ft.icons.ACCESSIBILITY_NEW
+    ),
+    create_card(
+        title="Неделя 4: Функциональная сила",
+        description="• Планка с поднятием рук – 3x30 сек\n• Приседания с выпрыгиванием – 3x15\n• Касания пяток лёжа – 3x20",
+        icon=ft.icons.SPORTS_MMA
+    ),
+    create_card(
+        title="Неделя 5: Интервальные нагрузки",
+        description="• Табата: 20 сек работа / 10 сек отдых × 4 круга\nУпражнения:\n– Бёрпи\n– Планка\n– Прыжки звёздочкой\n– Скручивания",
+        icon=ft.icons.TIMER
+    ),
+    create_card(
+        title="Неделя 6: Акцент на косые мышцы",
+        description="• Боковые скручивания – 3x20\n• Боковая планка с подъёмом ноги – 2x10\n• Альпинист по диагонали – 3x20",
+        icon=ft.icons.SWAP_HORIZONTAL_CIRCLE
+    ),
+    create_card(
+        title="Неделя 7: Увеличение выносливости",
+        description="• 1 мин планка\n• 1 мин прыжки\n• 1 мин скручивания\nПовторить 3 круга",
+        icon=ft.icons.FAST_FORWARD
+    ),
+    create_card(
+        title="Неделя 8: Контроль и результат",
+        description="• Тест на планку – держать максимум\n• Комплекс: 20 скручиваний, 15 бёрпи, 30 сек планка × 3 круга\n• Замеры тела и сравнение прогресса",
+        icon=ft.icons.INSIGHTS
+    ),
+]
+
 
     container_height = page.height - 100 if page.height else 600
 
@@ -175,7 +207,7 @@ def plan_abs(page: ft.Page, content_area: ft.Column, go_back, username, go_to_jo
                 ],
                 spacing=8,
                 alignment=ft.MainAxisAlignment.START,
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,  
                 expand=True,
             ),
             height=container_height,

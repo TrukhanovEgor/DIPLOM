@@ -1,6 +1,6 @@
 import flet as ft
 
-def plan_push_pull(page: ft.Page, content_area: ft.Column, go_back):
+def plan_push_pull(page: ft.Page, content_area: ft.Column, go_back, username=None, go_to_journal=None):
     content_area.controls.clear()
 
     # Статический заголовок

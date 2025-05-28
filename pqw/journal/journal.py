@@ -2,6 +2,7 @@ import flet as ft
 from database import delete_workout_from_db, get_user_workouts
 from .workout_creator_page import workout_creator_page
 from .Plan_journal_abs import plan_journal_abs
+from .Plan_journal_fitnes_club import plan_journal_fitness_club
 
 def journal_page(page, content_area, username, go_to_plan):
     if page is None:
@@ -34,6 +35,7 @@ def journal_page(page, content_area, username, go_to_plan):
         refresh_workouts()
 
     def create_tile(workout_name, exercises):
+    # Особая плитка для плана "Убрать живот"
         if workout_name == "Убрать живот" and show_plan_button["value"]:
             tile = ft.Row(
                 [
@@ -46,8 +48,7 @@ def journal_page(page, content_area, username, go_to_plan):
                             alignment=ft.MainAxisAlignment.CENTER,
                             spacing=10,
                         ),
-                        on_click=lambda e: plan_journal_abs(page, content_area),
-
+                        on_click=lambda e: plan_journal_abs(page, content_area, username, refresh_journal=None, go_back=None),
                         style=ft.ButtonStyle(
                             bgcolor=ft.colors.ORANGE_400,
                             color=ft.colors.WHITE,
@@ -75,8 +76,47 @@ def journal_page(page, content_area, username, go_to_plan):
                 spacing=10
             )
             return tile
-        elif workout_name == "Убрать живот" and not show_plan_button["value"]:
-            return None
+        # --- НОВОЕ: плитка для плана "Фитнес-клуб" ----
+        if workout_name == "Фитнес-клуб":
+            tile = ft.Row(
+                [
+                    ft.ElevatedButton(
+                        content=ft.Row(
+                            [
+                                ft.Icon(ft.icons.FITNESS_CENTER, size=24, color=ft.colors.WHITE),
+                                ft.Text("План: Фитнес-клуб", size=18, weight=ft.FontWeight.BOLD),
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            spacing=10,
+                        ),
+                        on_click=lambda e: plan_journal_fitness_club(page, content_area, username, refresh_journal = None, go_back = None),
+                        style=ft.ButtonStyle(
+                            bgcolor=ft.colors.GREEN_400,
+                            color=ft.colors.WHITE,
+                            shape=ft.RoundedRectangleBorder(radius=20),
+                            padding=ft.padding.symmetric(horizontal=20, vertical=16),
+                            shadow_color=ft.colors.GREEN_800,
+                            elevation=8,
+                            overlay_color=ft.colors.GREEN_200
+                        ),
+                    ),
+                    ft.IconButton(
+                        icon=ft.icons.DELETE,
+                        icon_color=ft.colors.RED,
+                        tooltip="Удалить план",
+                        on_click=lambda e: delete_whole_workout("Фитнес-клуб"),
+                        style=ft.ButtonStyle(
+                            shape=ft.RoundedRectangleBorder(radius=12),
+                            padding=ft.padding.all(10),
+                            bgcolor=ft.colors.RED_100,
+                            overlay_color=ft.colors.RED_200,
+                        ),
+                    )
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+                spacing=10
+            )
+            return tile
 
         # Обычные тренировки
         start_time, end_time, duration = exercises[0][4], exercises[0][5], exercises[0][6]

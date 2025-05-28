@@ -3,12 +3,12 @@ from database import save_workout
 import sqlite3
 from datetime import datetime
 
-def plan_journal_abs(page: ft.Page, content_area: ft.Column, username, refresh_journal, go_back):
-    print("Загрузка страницы Журнал плана 'Убрать живот'")  # Отладка
+def plan_journal_fitness_club(page: ft.Page, content_area: ft.Column, username, refresh_journal, go_back):
+    print("Загрузка страницы Журнал плана 'Фитнес-клуб'")  # Отладка
     content_area.controls.clear()
 
     app_bar = ft.AppBar(
-        title=ft.Text("План: Убрать живот", size=20, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
+        title=ft.Text("План: Фитнес-клуб", size=20, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
         bgcolor=ft.Colors.DEEP_ORANGE_300,
         leading=ft.IconButton(
             icon=ft.Icons.ARROW_BACK,
@@ -31,12 +31,13 @@ def plan_journal_abs(page: ft.Page, content_area: ft.Column, username, refresh_j
         cursor = conn.cursor()
         cursor.execute("""
             SELECT exercise_name FROM workouts
-            WHERE username = ? AND workout_name = 'Убрать живот'
+            WHERE username = ? AND workout_name = 'Фитнес-клуб'
         """, (username,))
         completed = set(row[0] for row in cursor.fetchall())
         conn.close()
         return completed
 
+    # План: 8 недель × 3 тренировки в неделю
     total_workouts = 8 * 3
     completed_workouts = get_progress()
     completed_count = len(completed_workouts)
@@ -82,6 +83,34 @@ def plan_journal_abs(page: ft.Page, content_area: ft.Column, username, refresh_j
         ),
     )
 
+    # Словарь с заданиями для каждого дня недели
+    day_tasks = {
+        1: [  # День 1: Грудь + Трицепс
+            "Жим штанги лёжа: 3x8–12",
+            "Жим гантелей на наклонной скамье: 3x10–12",
+            "Разводка гантелей: 3x12–15",
+            "Французский жим: 3x10–12",
+            "Разгибания на блоке: 3x12–15",
+            "Отжимания на брусьях: 3x10–12",
+        ],
+        2: [  # День 2: Спина + Бицепс
+            "Подтягивания: 3x6–10",
+            "Тяга штанги в наклоне: 3x8–12",
+            "Тяга верхнего блока: 3x10–12",
+            "Сгибания со штангой: 3x10–12",
+            "Сгибания с гантелями (молот): 3x12–15",
+            "Концентрированные сгибания: 3x12–15",
+        ],
+        3: [  # День 3: Ноги + Плечи
+            "Приседания со штангой: 3x8–12",
+            "Жим ногами: 3x10–12",
+            "Выпады с гантелями: 3x12 на ногу",
+            "Жим штанги стоя: 3x8–12",
+            "Подъёмы гантелей через стороны: 3x12–15",
+            "Тяга штанги к подбородку: 3x10–12",
+        ],
+    }
+
     def create_workout_card(week, day):
         exercise_name = f"День {day}: Неделя {week}"
         is_completed = exercise_name in completed_workouts
@@ -90,7 +119,7 @@ def plan_journal_abs(page: ft.Page, content_area: ft.Column, username, refresh_j
             if e.control.value:
                 save_workout(
                     username=username,
-                    workout_name="Убрать живот",
+                    workout_name="Фитнес-клуб",
                     exercise_name=exercise_name,
                     sets_count="-",
                     reps_count="-",
@@ -106,7 +135,7 @@ def plan_journal_abs(page: ft.Page, content_area: ft.Column, username, refresh_j
                 cursor.execute("""
                     DELETE FROM workouts
                     WHERE username = ? AND workout_name = ? AND exercise_name = ?
-                """, (username, "Убрать живот", exercise_name))
+                """, (username, "Фитнес-клуб", exercise_name))
                 conn.commit()
                 conn.close()
                 completed_workouts.discard(exercise_name)
@@ -123,11 +152,8 @@ def plan_journal_abs(page: ft.Page, content_area: ft.Column, username, refresh_j
             page.snack_bar.open = True
             page.update()
 
-        exercises = [
-            "Скручивания: 3 подхода по 15 повторений",
-            "Планка: 3 подхода по 30 секунд",
-            "Подъёмы ног: 3 подхода по 12 повторений",
-        ]
+        # Получаем упражнения для этого дня
+        exercises = day_tasks[day]
 
         return ft.Container(
             content=ft.Column(
@@ -138,7 +164,7 @@ def plan_journal_abs(page: ft.Page, content_area: ft.Column, username, refresh_j
                                 value=is_completed,
                                 on_change=on_checkbox_change,
                                 check_color=ft.Colors.WHITE,
-                                fill_color=ft.Colors.DEEP_ORANGE_300,
+                                fill_color=ft.Colors.GREEN_400,
                             ),
                             ft.Text(
                                 exercise_name,
@@ -179,7 +205,7 @@ def plan_journal_abs(page: ft.Page, content_area: ft.Column, username, refresh_j
                         f"Неделя {week}",
                         size=16,
                         weight=ft.FontWeight.BOLD,
-                        color=ft.Colors.DEEP_ORANGE_300,
+                        color=ft.Colors.GREEN_400,
                     ),
                     create_workout_card(week, 1),
                     create_workout_card(week, 2),

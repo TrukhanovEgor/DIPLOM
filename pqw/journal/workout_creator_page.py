@@ -4,7 +4,8 @@ from datetime import datetime
 import threading
 import time
 
-def workout_creator_page(page, content_area, username, on_workout_saved=None):
+
+def workout_creator_page(page, content_area, username, on_workout_saved=None,go_to_plan=None):
   
     exercises = []
     workout_name_field = ft.TextField(label="Название тренировки")
@@ -147,7 +148,7 @@ def workout_creator_page(page, content_area, username, on_workout_saved=None):
             )
         from .journal import journal_page
         content_area.controls.clear()
-        journal_page(page, content_area, username)
+        journal_page(page, content_area, username, go_to_plan)
         page.update()
         if on_workout_saved:
             on_workout_saved()
@@ -157,7 +158,7 @@ def workout_creator_page(page, content_area, username, on_workout_saved=None):
         stop_timer()
         from .journal import journal_page
         content_area.controls.clear()
-        journal_page(page, content_area, username)
+        journal_page(page, content_area, username, go_to_plan)
         page.update()
 
     app_bar = ft.AppBar(
