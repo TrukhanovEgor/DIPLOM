@@ -1,6 +1,7 @@
 import flet as ft
 from database import get_user_statistics 
 from .measurements import measurements
+from .Settings import settings_page
 
 def profile_page(page, logout_callback, username, ):
     def go_back(e):
@@ -55,24 +56,18 @@ def profile_page(page, logout_callback, username, ):
 
             ft.ListTile(
                 leading=ft.Icon(ft.icons.SETTINGS),
-                title=ft.Text("Настройки приложения"),
-                on_click=lambda _: page.snack_bar.open(ft.Text("Настройки пока не реализованы"))
+                title=ft.Text("Настройки"),
+                on_click=lambda e: (
+                    page.controls.clear(),
+                    page.add(settings_page(
+                        page=page,
+                        username=username,  # <-- обязательно!
+                        return_to_profile=lambda: profile_page(page, logout_callback, username),
+                        on_logout=logout_callback
+                    )),
+                    page.update()
             ),
-            ft.ListTile(
-                leading=ft.Icon(ft.icons.INFO),
-                title=ft.Text("О приложении"),
-                on_click=lambda _: page.snack_bar.open(ft.Text("Это фитнес-приложение для отслеживания тренировок"))
-            ),
-            ft.ListTile(
-                leading=ft.Icon(ft.icons.STAR),
-                title=ft.Text("Оценить приложение"),
-                on_click=lambda _: page.snack_bar.open(ft.Text("Спасибо за оценку!"))
-            ),
-            ft.ListTile(
-                leading=ft.Icon(ft.icons.WORKSPACE_PREMIUM),
-                title=ft.Text("Премиум версия"),
-                on_click=lambda _: page.snack_bar.open(ft.Text("Скоро доступно!"))
-            ),
+        ),
         ],
         spacing=5
     )
